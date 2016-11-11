@@ -13,6 +13,17 @@ app.listen(9000, function () {
 });
 
 app.get('/', function (req, res) {
+    console.log("get");
+    var user = {
+        user_id: "ajh322",
+        user_pw: "1234",
+        user_name: "지화닝",
+        user_gender: "m",
+        user_species: "건설환경공학과",
+        user_first: "1",
+        _id: new ObjectID()
+    };
+    conn.collection('user').insert(user);
     res.send('Hello World!');
 });
 app.post('/sign_in', function (req, res) {
@@ -37,7 +48,7 @@ app.post('/sign_in', function (req, res) {
         }
     })
 });
-app.post('/log_in', function (req, res) {
+app.post('/login', function (req, res) {
     user.find({user_id: req.body.user_id, user_pw:req.body.user_pw}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         if (doc != null) //로그인 성공
