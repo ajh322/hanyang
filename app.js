@@ -1,5 +1,5 @@
-var app = express();
 var express = require('express');
+var app = express();
 var mongoose = require('mongoose');
 var http = require('http');
 var server = http.createServer(app);
@@ -9,6 +9,7 @@ var conn = mongoose.connection;
 var user = require('./models/user');
 
 app.listen(9000, function () {
+    console.log("running! port:9000");
 });
 
 app.get('/', function (req, res) {
