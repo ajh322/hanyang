@@ -21,7 +21,6 @@ app.get('/', function (req, res) {
         user_gender: "m",
         user_species: "건설환경공학과",
         user_first: "1",
-        _id: new ObjectID()
     };
     conn.collection('user').insert(user);
     res.send('Hello World!');
