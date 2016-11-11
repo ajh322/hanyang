@@ -8,6 +8,10 @@ mongoose.connect('mongodb://35.163.104.205:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.listen(9000, function () {
     console.log("running! port:9000");
 });
