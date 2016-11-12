@@ -8,14 +8,20 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://35.163.104.205:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
+var appp = require('http').createServer(handler)
+var io = require('socket.io')(appp);
 
+function handler (req, res) {
+    console.log("go");
+}
 
-var io = require('socket.io')(server);
-
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('a user connected');
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
 });
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
