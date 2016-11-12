@@ -23,16 +23,11 @@ io.sockets.on('connection', function (socket) {
     socket.on('join', function (data) {
         console.log(data.userid + "joined" + "roomname:" + data.roomname);
         socket.join(data.roomname);
-        socket.set('room', data.roomname);
-        socket.get('room', function (error, room) {
-            io.sockets.in(room).emit('join', data.userid);
-        })
+        console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
     })
     socket.on('message', function (message) {
         console.log("message:" + data.message);
-        socket.get('room', function (error, room) {
-            io.sockets.in(room).emit('message', message);
-        })
+        io.sockets.in(data.roomname).emit('message',data.message);
     })
     socket.on('disconnection', function () {
         console.log("disconnected");
