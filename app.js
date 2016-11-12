@@ -8,8 +8,14 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://35.163.104.205:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
-var socketio = require('socket.io');
-var io = socketio.listen(server);
+
+
+var io = require('socket.io').listen(server);
+
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -32,26 +38,26 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 
-io.sockets.on('connection', function (socket) {
-    //room join
-    socket.on('join', function (data) {
-        console.log(data.userid + "joined" + "roomname:" + data.roomname);
-        socket.join(data.roomname);
-        socket.set('room', data.roomname);
-        socket.get('room', function (error, room) {
-            io.sockets.in(room).emit('join', data.userid);
-        })
-    })
-    socket.on('message', function (message) {
-        console.log("message:" + data.message);
-        socket.get('room', function (error, room) {
-            io.sockets.in(room).emit('message', message);
-        })
-    })
-    socket.on('disconnection', function () {
-        console.log("disconnected");
-    });
-})
+/*io.sockets.on('connection', function (socket) {
+ //room join
+ socket.on('join', function (data) {
+ console.log(data.userid + "joined" + "roomname:" + data.roomname);
+ socket.join(data.roomname);
+ socket.set('room', data.roomname);
+ socket.get('room', function (error, room) {
+ io.sockets.in(room).emit('join', data.userid);
+ })
+ })
+ socket.on('message', function (message) {
+ console.log("message:" + data.message);
+ socket.get('room', function (error, room) {
+ io.sockets.in(room).emit('message', message);
+ })
+ })
+ socket.on('disconnection', function () {
+ console.log("disconnected");
+ });
+ })*/
 
 app.post('/sign_in', function (req, res) {
     console.log('get');
