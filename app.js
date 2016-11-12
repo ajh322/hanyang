@@ -27,6 +27,7 @@ json = JSON.parse(data);
         console.log(json);
         console.log(json.userid + "joined" + "roomname:" + json.roomname);
         socket.join(json.roomname);
+        io.sockets.in(json.roomname).emit('message',json.userid+"님 입장");
         console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
     })
     socket.on('message', function (message){        
