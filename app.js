@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var http = require('http');
-var server = http.createServer(app);
+var server = http.Server(app);
 var bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://35.163.104.205:27017/user');
@@ -10,7 +10,7 @@ var conn = mongoose.connection;
 var user = require('./models/user');
 
 
-var io = require('socket.io').listen(server);
+var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
     console.log('a user connected');
