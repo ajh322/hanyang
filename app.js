@@ -34,8 +34,9 @@ app.post('/sign_in', function (req, res) {
     console.log('get');
     console.log(req.body);
     user.find({user_id: req.body.user_id}).exec(function (err, doc) {
-        //나중에 로그인 가능여부 판별후에 해야함.
-        if (doc == null)
+console.log(doc);    
+    //나중에 로그인 가능여부 판별후에 해야함.
+        if (doc == "")
         {
             if(true)//api 사용하여 존재하는 학번, 재학생인지 판단인지 확인
             {
@@ -45,8 +46,7 @@ app.post('/sign_in', function (req, res) {
                 user_name: req.body.user_name,
                 //user_gender: req.body.user_gender, api에서 받아오기
                 //user_species: req.body.user_species, api에서 받아오기
-                user_first: "1",
-                _id: new ObjectID()
+                user_first: "1"
             };
             conn.collection('user').insert(user);
             res.end("success");
@@ -66,7 +66,7 @@ app.post('/login', function (req, res) {
     user.find({user_id: req.body.user_id, user_pw:req.body.user_pw}).lean().exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
 console.log(doc);
-        if (doc != null) //로그인 성공
+        if (doc != "") //로그인 성공
         {
             //최근로그인기록이나 누적로그인 회수도 기록할까? 이런거 기록하자
             res.end(JSON.stringify(doc));
