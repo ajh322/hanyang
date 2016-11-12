@@ -21,7 +21,7 @@ server.listen(9000, function () {
 io.on('connection', function (socket) {
     console.log('a user connected');
     socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
+    socket.on('message', function (data) {
         console.log(data);
     });
 });
