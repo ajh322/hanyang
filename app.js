@@ -18,13 +18,27 @@ app.use(bodyParser.urlencoded({
 server.listen(9000, function () {
     console.log("running! port:9000");
 });
-io.on('connection', function (socket) {
-    console.log('a user connected');
-    socket.emit('news', { hello: 'world' });
-    socket.on('message', function (data) {
-        console.log(data);
+io.sockets.on('connection', function (socket) {
+    //room join
+    socket.on('join', function (data) {
+        console.log(data.userid + "joined" + "roomname:" + data.roomname);
+        socket.join(data.roomname);
+        socket.set('room', data.roomname);
+        socket.get('room', function (error, room) {
+            io.sockets.in(room).emit('join', data.userid);
+        })
+    })
+    socket.on('message', function (message) {
+        console.log("message:" + data.message);
+        socket.get('room', function (error, room) {
+            io.sockets.in(room).emit('message', message);
+        })
+    })
+    socket.on('disconnection', function () {
+        console.log("disconnected");
     });
-});
+})
+
 app.get('/', function (req, res) {
     console.log("get");
     var user = {
@@ -39,26 +53,6 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 
-/*io.sockets.on('connection', function (socket) {
- //room join
- socket.on('join', function (data) {
- console.log(data.userid + "joined" + "roomname:" + data.roomname);
- socket.join(data.roomname);
- socket.set('room', data.roomname);
- socket.get('room', function (error, room) {
- io.sockets.in(room).emit('join', data.userid);
- })
- })
- socket.on('message', function (message) {
- console.log("message:" + data.message);
- socket.get('room', function (error, room) {
- io.sockets.in(room).emit('message', message);
- })
- })
- socket.on('disconnection', function () {
- console.log("disconnected");
- });
- })*/
 
 app.post('/sign_in', function (req, res) {
     console.log('get');
