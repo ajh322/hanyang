@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
     //room join
 var josn;
     socket.on('join', function (data) {
-console.log(data);
+console.log(data); 
 json = JSON.parse(data);
         console.log(json);
         console.log(json.userid + "joined" + "roomname:" + json.roomname);
