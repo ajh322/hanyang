@@ -20,15 +20,18 @@ server.listen(9000, function () {
 });
 io.sockets.on('connection', function (socket) {
     //room join
+var josn;
     socket.on('join', function (data) {
 console.log(data);
-        console.log(data.userid + "joined" + "roomname:" + data.roomname);
-        socket.join(data.roomname);
+json = JSON.parse(data);
+        console.log(json);
+        console.log(json.userid + "joined" + "roomname:" + json.roomname);
+        socket.join(json.roomname);
         console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
     })
-    socket.on('message', function (message) {
-        console.log("message:" + data.message);
-        io.sockets.in(data.roomname).emit('message',data.message);
+    socket.on('message', function (message){        
+console.log("message:" + message);
+        io.sockets.in(json.roomname).emit('message',message);
     })
     socket.on('disconnection', function () {
         console.log("disconnected");
