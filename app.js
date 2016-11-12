@@ -21,8 +21,10 @@ server.listen(9000, function () {
 io.sockets.on('connection', function (socket) {
     //room join
     socket.on('join', function (data) {
-        console.log(data.userid + "joined" + "roomname:" + data.roomname);
-        socket.join(data.roomname);
+        var json = JSON.parse(data);
+        console.log(json);
+        console.log(json.userid + "joined" + "roomname:" + json.roomname);
+        socket.join(json.roomname);
         console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
     })
     socket.on('message', function (message) {
