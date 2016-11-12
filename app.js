@@ -20,7 +20,7 @@ app.listen(9000, function () {
 app.get('/', function (req, res) {
     console.log("get");
     var user = {
-        user_id: 2016022288,
+        user_id: "2016022288",
         user_pw: "1234",
         user_name: "지화닝",
         user_gender: "m",
@@ -31,24 +31,33 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 app.post('/sign_in', function (req, res) {
+    console.log('get');
+    console.log(req.body);
     user.find({user_id: req.body.user_id}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
-        if (doc == null) //회원가입 성공
+        if (doc == null)
         {
+            if(true)//api 사용하여 존재하는 학번, 재학생인지 판단인지 확인
+            {
             var user = {
                 user_id: req.body.user_id,
                 user_pw: req.body.user_pw,
                 user_name: req.body.user_name,
-                user_gender: req.body.user_gender,
-                user_species: req.body.user_species,
+                //user_gender: req.body.user_gender, api에서 받아오기
+                //user_species: req.body.user_species, api에서 받아오기
                 user_first: "1",
                 _id: new ObjectID()
             };
             conn.collection('user').insert(user);
             res.end("success");
+            }
+            else
+            {
+                res.end("ID not exist")
+            }
         }
         else {
-            res.end("failed")
+            res.end("alreay exists")
         }
     })
 });

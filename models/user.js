@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
-    user_id: {type:Number,required:true,unique:true},
+    user_id: {type:String,required:true,unique:true},
     user_pw:{type:String},
     user_name:{type:String},
     user_gender:{type:String},
