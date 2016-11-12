@@ -10,6 +10,14 @@ var conn = mongoose.connection;
 var user = require('./models/user');
 var io = require('socket.io')(server);
 
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+server.listen(9000, function () {
+    console.log("running! port:9000");
+});
 io.on('connection', function (socket) {
     console.log('a user connected');
     socket.emit('news', { hello: 'world' });
@@ -17,14 +25,6 @@ io.on('connection', function (socket) {
         console.log(data);
     });
 });
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.listen(9000, function () {
-    console.log("running! port:9000");
-});
-
 app.get('/', function (req, res) {
     console.log("get");
     var user = {
