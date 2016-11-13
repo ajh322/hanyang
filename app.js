@@ -1,3 +1,5 @@
+
+
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
@@ -41,7 +43,7 @@ console.log("message:" + message);
 
 app.get('/', function (req, res) {
     console.log("get");
-    var user = {
+    /*var user = {
         user_id: "2016022288",
         user_pw: "1234",
         user_name: "지화닝",
@@ -50,7 +52,7 @@ app.get('/', function (req, res) {
         user_first: "1",
     };
     conn.collection('user').insert(user);
-    res.send('Hello World!');
+    res.send('Hello World!');*/
 });
 
 
@@ -113,6 +115,41 @@ app.post('/check_session', function (req, res) {
         }
         else {
             res.end("unmatch")
+        }
+    })
+})
+
+app.post('/search_m', function (req, res) { //남자 검색하러옴
+    console.log("외로운 남자:"+req.body);
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+        if (doc.user_on_search=="0") //검색중인지 여부
+        {
+            doc.user_on_search="1";
+            doc.save();
+            res.end("go");
+        }
+        else {
+            res.end("stop");
+        }
+    })
+})
+
+app.post('/search_cancel', function (req, res) { //남자 검색하러옴
+    console.log("검색취소하심니다:"+req.body);
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+        console.log(doc);
+        if (doc.user_on_search=="1") //검색중인지 여부
+        {
+            doc.user_on_search="0";
+            doc.save();
+            console.log("취소 정상적으로 해결");
+            res.end("success");
+        }
+        else {
+            console.log("취소 불가");
+            res.end("failed");
         }
     })
 })
