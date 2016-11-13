@@ -20,19 +20,24 @@ server.listen(9000, function () {
 });
 io.sockets.on('connection', function (socket) {
     //room join
-var josn;
+    var josn;
+
+    socket.on('search_m', function (data) {
+        console.log(data+"가 서칭에 참가하였음.");
+    })
+
     socket.on('join', function (data) {
-console.log(data);
-json = JSON.parse(data);
+        console.log(data);
+        json = JSON.parse(data);
         console.log(json);
         console.log(json.userid + "joined" + "roomname:" + json.roomname);
         socket.join(json.roomname);
-        io.sockets.in(json.roomname).emit('message',json.userid+"님 입장");
+        io.sockets.in(json.roomname).emit('message', json.userid + "님 입장");
         console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
     })
-    socket.on('message', function (message){        
-console.log("message:" + message);
-        io.sockets.in(json.roomname).emit('message',message);
+    socket.on('message', function (message) {
+        console.log("message:" + message);
+        io.sockets.in(json.roomname).emit('message', message);
     })
     socket.on('disconnection', function () {
         console.log("disconnected");
@@ -42,15 +47,15 @@ console.log("message:" + message);
 app.get('/', function (req, res) {
     console.log("get");
     /*var user = {
-        user_id: "2016022288",
-        user_pw: "1234",
-        user_name: "지화닝",
-        user_gender: "m",
-        user_species: "건설환경공학과",
-        user_first: "1",
-    };
-    conn.collection('user').insert(user);
-    res.send('Hello World!');*/
+     user_id: "2016022288",
+     user_pw: "1234",
+     user_name: "지화닝",
+     user_gender: "m",
+     user_species: "건설환경공학과",
+     user_first: "1",
+     };
+     conn.collection('user').insert(user);
+     res.send('Hello World!');*/
 });
 
 
@@ -92,9 +97,9 @@ app.post('/login', function (req, res) {
         if (doc != "" && doc != null) //로그인 성공
         {
             //최근로그인기록이나 누적로그인 회수도 기록할까? 이런거 기록하자
-                doc["user_session"] = date; //세션값
-                doc.save();
-                res.end(JSON.stringify(doc));
+            doc["user_session"] = date; //세션값
+            doc.save();
+            res.end(JSON.stringify(doc));
         }
         else {
             res.end("failed")
@@ -103,11 +108,11 @@ app.post('/login', function (req, res) {
 });
 
 app.post('/check_session', function (req, res) {
-    console.log("세션확인:"+req.body);
+    console.log("세션확인:" + req.body);
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         console.log(doc);
-        if (doc.user_session= req.body.user_session) //로그인 성공
+        if (doc.user_session = req.body.user_session) //로그인 성공
         {
             res.end("match")
         }
@@ -118,13 +123,13 @@ app.post('/check_session', function (req, res) {
 })
 
 app.post('/search_m', function (req, res) { //남자 검색하러옴
-    console.log("외로운 남자:"+req.body);
+    console.log("외로운 남자:" + req.body);
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         console.log(doc);
-        if (doc.user_on_search=="0") //검색중인지 여부
+        if (doc.user_on_search == "0") //검색중인지 여부
         {
-            doc.user_on_search="1";
+            doc.user_on_search = "1";
             doc.save();
             res.end("go");
         }
@@ -135,12 +140,12 @@ app.post('/search_m', function (req, res) { //남자 검색하러옴
 })
 
 app.post('/search_cancel', function (req, res) { //남자 검색하러옴
-    console.log("검색취소하심니다:"+req.body);
+    console.log("검색취소하심니다:" + req.body);
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         console.log(doc);
-        if (doc.user_on_search=="1") //검색중인지 여부
+        if (doc.user_on_search == "1") //검색중인지 여부
         {
-            doc.user_on_search="0";
+            doc.user_on_search = "0";
             doc.save();
             console.log("취소 정상적으로 해결");
             res.end("success");
