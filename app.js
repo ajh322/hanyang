@@ -89,13 +89,12 @@ app.post('/login', function (req, res) {
     user.findOne({user_id: req.body.user_id, user_pw: req.body.user_pw}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         console.log(doc);
-        if (doc != "") //로그인 성공
+        if (doc != "" && doc != null) //로그인 성공
         {
             //최근로그인기록이나 누적로그인 회수도 기록할까? 이런거 기록하자
-
-            doc["user_session"]=date; //세션값
-            doc.save();
-            res.end(JSON.stringify(doc));
+                doc["user_session"] = date; //세션값
+                doc.save();
+                res.end(JSON.stringify(doc));
         }
         else {
             res.end("failed")
