@@ -37,7 +37,8 @@ io.sockets.on('connection', function (socket) {
     })
     socket.on('message', function (message) {
         console.log("message:" + message);
-        io.sockets.in(json.roomname).emit('message', message);
+        socket.broadcast.emit(message);
+        // io.sockets.in(json.roomname).emit('message', message);
     })
     socket.on('disconnect', function () {
         console.log('DISCONNESSO!!! ');
