@@ -23,7 +23,7 @@ server.listen(9000, function () {
 io.sockets.on('connection', function (socket) {
     //room join
     var josn;
-
+    console.log("get");
     socket.on('search_m', function (data) {
         console.log(data+"가 서칭에 참가하였음.");
     })
