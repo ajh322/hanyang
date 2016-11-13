@@ -41,8 +41,8 @@ io.sockets.on('connection', function (socket) {
         console.log("message:" + message);
         io.sockets.in(json.roomname).emit('message', message);
     })
-    socket.on('disconnection', function () {
-        console.log("disconnected");
+    socket.on('disconnect', function () {
+        console.log('DISCONNESSO!!! ');
     });
 })
 
