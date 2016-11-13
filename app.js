@@ -46,6 +46,7 @@ io.sockets.on('connection', function (socket) {
 
 app.get('/', function (req, res) {
     console.log("get");
+    res.sendFile(__dirname + '/index.html');
     /*var user = {
      user_id: "2016022288",
      user_pw: "1234",
