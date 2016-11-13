@@ -21,7 +21,7 @@ server.listen(9000, function () {
 io.sockets.on('connection', function (socket) {
     //room join
     var josn;
-    console.log("get");
+    console.log("connected!");
     socket.on('search_m', function (data) {
         console.log(data+"가 서칭에 참가하였음.");
     })
@@ -37,7 +37,7 @@ io.sockets.on('connection', function (socket) {
     })
     socket.on('message', function (message) {
         console.log("message:" + message);
-        socket.broadcast.emit(message);
+        io.sockets.emit('message', message);
         // io.sockets.in(json.roomname).emit('message', message);
     })
     socket.on('disconnect', function () {
