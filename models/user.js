@@ -9,7 +9,8 @@ var userSchema = new mongoose.Schema({
     user_gender:{type:String},
     user_species:{type:String},
     user_first:{type:String,default:"0"}, //최초소개팅 했음
-    user_session:{type:String}
+    user_session:{type:String},
+    user_on_search:{type:String,default:"0"}
 });
 var user = mongoose.model('user', userSchema, "user");
 module.exports = user;
