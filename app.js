@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
     //room join
 var josn;
     socket.on('join', function (data) {
-console.log(data); 
+console.log(data);
 json = JSON.parse(data);
         console.log(json);
         console.log(json.userid + "joined" + "roomname:" + json.roomname);
@@ -85,12 +85,16 @@ app.post('/sign_in', function (req, res) {
 });
 app.post('/login', function (req, res) {
     console.log(req.body);
-    user.find({user_id: req.body.user_id, user_pw: req.body.user_pw}).exec(function (err, doc) {
+    var date = date.now(); //지금 시각을 세션값으로하면 충분하지않을까?
+    user.findOne({user_id: req.body.user_id, user_pw: req.body.user_pw}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         console.log(doc);
         if (doc != "") //로그인 성공
         {
             //최근로그인기록이나 누적로그인 회수도 기록할까? 이런거 기록하자
+
+            doc["user_session"]=date; //세션값
+            doc.save();
             res.end(JSON.stringify(doc));
         }
         else {
@@ -99,3 +103,17 @@ app.post('/login', function (req, res) {
     })
 });
 
+app.post('/check_session', function (req, res) {
+    console.log("세션확인:"+req.body);
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+        if (doc.user_session= req.body.user_session) //로그인 성공
+        {
+            res.end("match")
+        }
+        else {
+            res.end("unmatch")
+        }
+    })
+})
