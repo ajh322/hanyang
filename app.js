@@ -62,7 +62,10 @@ app.get('/', function (req, res) {
      res.send('Hello World!');*/
 });
 
-
+app.post('/send_token', function (req, res) {
+    console.log('token');
+    console.log(req.body);
+})
 app.post('/sign_in', function (req, res) {
     console.log('get');
     console.log(req.body);
