@@ -67,7 +67,7 @@ app.post('/sign_in', function (req, res) {
                     user_id: req.body.user_id,
                     user_pw: req.body.user_pw,
                     user_name: req.body.user_name,
-                    //user_gender: req.body.user_gender, api에서 받아오기
+                    user_gender: req.body.user_gender, //회원가입에 성별 추가함api에서 받아오기
                     //user_species: req.body.user_species, api에서 받아오기
                     user_first: "1"
                 };
