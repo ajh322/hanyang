@@ -115,15 +115,16 @@ app.post('/login', function (req, res) {
 });
 
 app.post('/check_session', function (req, res) {
-    console.log("세션확인:" + req.body);
+    console.log("세션확인:" + req.body.user_token);
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         //나중에 로그인 가능여부 판별후에 해야함.
         console.log(doc);
         if (doc.user_session = req.body.user_session) //로그인 성공
         {
-            doc.token=req.body.user_token;
-            doc.save();
-            res.end("match")
+            doc["user_token"]=req.body.user_token;
+            doc.save(); 
+console.log(doc);           
+res.end("match")
         }
         else {
             res.end("unmatch")
