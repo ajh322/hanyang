@@ -119,6 +119,8 @@ app.post('/check_session', function (req, res) {
         console.log(doc);
         if (doc.user_session = req.body.user_session) //로그인 성공
         {
+            doc.token=req.body.user_token;
+            doc.save();
             res.end("match")
         }
         else {
