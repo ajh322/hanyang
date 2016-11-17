@@ -24,7 +24,7 @@ function list_m_add(id) {
             index = docs.index;
     });
     //인덱스값 찾았으므로 db에 +1해줘서 사람을 순차적으로 넣는다.
-    list_m.insert({index: index + 1, user_id: id});
+    conn.collection('list_m').insert({index: index + 1, user_id: id});
 }
 function list_w_add(id) {
     var index;
@@ -35,7 +35,7 @@ function list_w_add(id) {
             index = docs.index;
     });
     //인덱스값 찾았으므로 db에 +1해줘서 사람을 순차적으로 넣는다.
-    list_w.insert({index: index + 1, user_id: id});
+    conn.collection('list_w').insert({index: index + 1, user_id: id});
 }
 
 function search() {
