@@ -19,7 +19,7 @@ function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
         console.log(docs);
-        if (!docs.length)
+        if (docs==null)
         {
             console.log("a");
             index = 0;
