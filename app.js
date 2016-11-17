@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
@@ -11,22 +9,122 @@ mongoose.connect('mongodb://35.163.104.205:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
 var io = require('socket.io')(server);
+var FCM = require('fcm').FCM;
+
+var apiKey = '';
+var fcm = new FCM(apiKey);
+function list_m_add(id) {
+    var index;
+    list_m.findOne({}).sort('-index').exec(function (err, docs) {
+        if (docs == null)
+            index = 0;
+        else
+            index = docs.index;
+    });
+    //인덱스값 찾았으므로 db에 +1해줘서 사람을 순차적으로 넣는다.
+    list_m.insert({index: index + 1, user_id: id});
+}
+function search() {
+    console.log("searching!")
+    var m, w;
+    list_m.find({}).sort('index').exec(function (err, docs) {
+        //남자오름차순 여자오름차순 한다음에...
+        m = docs;
+    })
+    list_w.find({}).sort('index').exec(function (err, docs) {
+        //남자오름차순 여자오름차순 한다음에...
+        w = docs;
+    })
+    console.log(m[0] + w[0]);
+    test(m[0].user_id, w[0].user_id);
+}
+function send_fcm(m_id, w_id) {
+    var m_token, w_token;
+    user.findOne({user_id: m_id}).exec(function (err, docs) {
+        m_token = docs.user_token;
+    })
+    user.findOne({user_id: w_id}).exec(function (err, docs) {
+        w_token = docs.user_token;
+    })
+    var message_m = {
+        registration_id: m_token, // required
+        collapse_key: Date.now(),
+        'w_id': w_id
+    };
+    var message_w = {
+        registration_id: w_token, // required
+        collapse_key: Date.now(),
+        'm_id': m_id
+    };
 
 
+    fcm.send(message_m, function (err, messageId) {
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Sent with m_message ID: ", messageId);
+        }
+    });
+    fcm.send(message_w, function (err, messageId) {
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Sent with w_message ID: ", messageId);
+        }
+    });
+    user.findOne({user_id: m_id}).exec(function (err, doc) { //검색중 끄고 test모드 시작
+        console.log(doc);
+        if (doc.user_on_search == "1") //검색중인지 여부
+        {
+            doc.user_on_search = "0";
+            doc.user_on_test = "1";
+            doc.save();
+            console.log("취소 정상적으로 해결");
+            res.end("success");
+        }
+        else {
+            console.log("취소 불가");
+            res.end("failed");
+        }
+    })
+    user.findOne({user_id: w_id}).exec(function (err, doc) {
+        console.log(doc);
+        if (doc.user_on_search == "1") //검색중인지 여부
+        {
+            doc.user_on_search = "0";
+            doc.save();
+            console.log("취소 정상적으로 해결");
+            res.end("success");
+        }
+        else {
+            console.log("취소 불가");
+            res.end("failed");
+        }
+    })
+}
+function test(m_id, w_id) {
+    //db에서 저거된사람들의 인덱스값을 지워야함. 나중에 인덱스0번을 통하여 우선순위기능 해야할듯.
+    list_m.remove({user_id: m_id}, function (err) {
+        console.log(err);
+    });
+    list_w.remove({user_id: w_id}, function (err) {
+        console.log(err);
+    });
+    //알림가야하고 앱에서 서로의 프로필이 나와야함.
+    send_fcm(m_id, w_id);
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 server.listen(9000, function () {
+    var intervalID = setInterval(search(), 10000); //10분
     console.log("running! port:9000");
 });
 io.sockets.on('connection', function (socket) {
     //room join
     var josn;
     console.log("connected!");
-    socket.on('search_m', function (data) {
-        console.log(data+"가 서칭에 참가하였음.");
-    })
 
     socket.on('join', function (data) {
         console.log(data);
@@ -121,10 +219,10 @@ app.post('/check_session', function (req, res) {
         console.log(doc);
         if (doc.user_session = req.body.user_session) //로그인 성공
         {
-            doc["user_token"]=req.body.user_token;
-            doc.save(); 
-console.log(doc);           
-res.end("match")
+            doc["user_token"] = req.body.user_token;
+            doc.save();
+            console.log(doc);
+            res.end("match")
         }
         else {
             res.end("unmatch")
@@ -141,6 +239,7 @@ app.post('/search_m', function (req, res) { //남자 검색하러옴
         {
             doc.user_on_search = "1";
             doc.save();
+            list_m_add(req.body.user_id);
             res.end("go");
         }
         else {
