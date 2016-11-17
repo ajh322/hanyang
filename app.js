@@ -147,6 +147,18 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 server.listen(9000, function () {
+    var message_m = {
+        registration_id: "cNuZ1HZ0Pp0:APA91bGzPiIp_KxN-9ThcamyoQeF7O52WStAVKVaG1AajhmY2-jW8EeOcXizZ5xNsiBTvutSdOeKkX0cv7d70sIne1vvQjEW0VWmNJG1ZdcBeOCaj8l-8VR8wmp9MWHeeUatXa4kD3V8", // required
+        collapse_key: Date.now(),
+        'w_id': "hi"
+    };
+    fcm.send(message_m, function (err, messageId) {
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Sent with m_message ID: ", messageId);
+        }
+    })
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
