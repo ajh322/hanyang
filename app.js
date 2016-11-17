@@ -36,7 +36,8 @@ function search() {
         w = docs;
     })
     console.log(m[0] + w[0]);
-    test(m[0].user_id, w[0].user_id);
+    if (m[0] != null && w[0] != null)
+        test(m[0].user_id, w[0].user_id);
 }
 function send_fcm(m_id, w_id) {
     var m_token, w_token;
