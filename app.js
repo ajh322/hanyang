@@ -115,11 +115,9 @@ function send_fcm(m_id, w_id) {
             doc.user_on_test = "1";
             doc.save();
             console.log("취소 정상적으로 해결");
-            res.end("success");
         }
         else {
             console.log("취소 불가");
-            res.end("failed");
         }
     })
     user.findOne({user_id: w_id}).exec(function (err, doc) {
@@ -129,11 +127,9 @@ function send_fcm(m_id, w_id) {
             doc.user_on_search = "0";
             doc.save();
             console.log("취소 정상적으로 해결");
-            res.end("success");
         }
         else {
             console.log("취소 불가");
-            res.end("failed");
         }
     })
 }
