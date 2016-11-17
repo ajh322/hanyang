@@ -70,7 +70,7 @@ function search() {
         if (m[0] != null && w[0] != null)
             test(m[0].user_id, w[0].user_id);
     } catch (e) {
-        console.log("업슴")
+        console.log(e)
     }
 }
 function send_fcm(m_id, w_id) {
