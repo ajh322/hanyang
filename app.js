@@ -55,12 +55,14 @@ function search() {
     var m, w;
     list_m.find({}).sort('index').exec(function (err, docs) {
         //남자오름차순 여자오름차순 한다음에...
+        console.log("a!")
         m = docs;
         return find_b
     })
     function find_b() {
         list_w.find({}).sort('index').exec(function (err, docs) {
             //남자오름차순 여자오름차순 한다음에...
+            console.log("b")
             w = docs;
             return c();
         })
@@ -68,6 +70,7 @@ function search() {
 
     function c() {
         try {
+            console.log("c")
             console.log(m[0] + w[0]);
             if (m[0] != null && w[0] != null)
                 test(m[0].user_id, w[0].user_id);
