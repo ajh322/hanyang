@@ -18,7 +18,7 @@ var fcm = new FCM(apiKey);
 function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
-        if (docs == null)
+        if (docs == NaN)
             index = 0;
         else
             index = docs.index;
@@ -29,7 +29,7 @@ function list_m_add(id) {
 function list_w_add(id) {
     var index;
     list_w.findOne({}).sort('-index').exec(function (err, docs) {
-        if (docs == null)
+        if (docs == NaN)
             index = 0;
         else
             index = docs.index;
