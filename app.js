@@ -18,6 +18,8 @@ var fcm = new FCM(apiKey);
 function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
+        console.log(docs);
+        console.log(docs.index);
         if (docs == NaN)
             index = 0;
         else
