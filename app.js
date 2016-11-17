@@ -49,9 +49,13 @@ function search() {
         //남자오름차순 여자오름차순 한다음에...
         w = docs;
     })
-    console.log(m[0] + w[0]);
-    if (m[0] != null && w[0] != null)
-        test(m[0].user_id, w[0].user_id);
+    try {
+        console.log(m[0] + w[0]);
+        if (m[0] != null && w[0] != null)
+            test(m[0].user_id, w[0].user_id);
+    } catch (e) {
+        console.log("업슴")
+    }
 }
 function send_fcm(m_id, w_id) {
     var m_token, w_token;
