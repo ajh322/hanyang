@@ -8,6 +8,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://35.163.104.205:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
+var list_m = require('./models/list_m');
+var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
 var FCM = require('fcm').FCM;
 
@@ -24,6 +26,18 @@ function list_m_add(id) {
     //인덱스값 찾았으므로 db에 +1해줘서 사람을 순차적으로 넣는다.
     list_m.insert({index: index + 1, user_id: id});
 }
+function list_w_add(id) {
+    var index;
+    list_w.findOne({}).sort('-index').exec(function (err, docs) {
+        if (docs == null)
+            index = 0;
+        else
+            index = docs.index;
+    });
+    //인덱스값 찾았으므로 db에 +1해줘서 사람을 순차적으로 넣는다.
+    list_w.insert({index: index + 1, user_id: id});
+}
+
 function search() {
     console.log("searching!")
     var m, w;
@@ -241,6 +255,23 @@ app.post('/search_m', function (req, res) { //남자 검색하러옴
             doc.user_on_search = "1";
             doc.save();
             list_m_add(req.body.user_id);
+            res.end("go");
+        }
+        else {
+            res.end("stop");
+        }
+    })
+})
+app.post('/search_w', function (req, res) { //남자 검색하러옴
+    console.log("외로운 여자:" + req.body);
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+        if (doc.user_on_search == "0") //검색중인지 여부
+        {
+            doc.user_on_search = "1";
+            doc.save();
+            list_w_add(req.body.user_id);
             res.end("go");
         }
         else {
