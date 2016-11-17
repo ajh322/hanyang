@@ -19,13 +19,11 @@ function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
         console.log(docs);
-        if (docs==null)
-        {
+        if (docs == null) {
             console.log("a");
             index = 0;
         }
-        else
-        {
+        else {
             console.log("b");
             index = docs.index;
         }
@@ -38,13 +36,11 @@ function list_w_add(id) {
     var index;
     list_w.findOne({}).sort('-index').exec(function (err, docs) {
         console.log(docs);
-        if (docs==null)
-        {
+        if (docs == null) {
             console.log("a");
             index = 0;
         }
-        else
-        {
+        else {
             console.log("b");
             index = docs.index;
         }
@@ -60,17 +56,24 @@ function search() {
     list_m.find({}).sort('index').exec(function (err, docs) {
         //남자오름차순 여자오름차순 한다음에...
         m = docs;
+        return find_b
     })
-    list_w.find({}).sort('index').exec(function (err, docs) {
-        //남자오름차순 여자오름차순 한다음에...
-        w = docs;
-    })
-    try {
-        console.log(m[0] + w[0]);
-        if (m[0] != null && w[0] != null)
-            test(m[0].user_id, w[0].user_id);
-    } catch (e) {
-        console.log(e)
+    function find_b() {
+        list_w.find({}).sort('index').exec(function (err, docs) {
+            //남자오름차순 여자오름차순 한다음에...
+            w = docs;
+            return c();
+        })
+    }
+
+    function c() {
+        try {
+            console.log(m[0] + w[0]);
+            if (m[0] != null && w[0] != null)
+                test(m[0].user_id, w[0].user_id);
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
 function send_fcm(m_id, w_id) {
