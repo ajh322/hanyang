@@ -56,6 +56,7 @@ function search() {
     } catch (e) {
         console.log("업슴")
     }
+    return;
 }
 function send_fcm(m_id, w_id) {
     var m_token, w_token;
