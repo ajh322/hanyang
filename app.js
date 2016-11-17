@@ -20,7 +20,7 @@ function list_m_add(id) {
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
         console.log(docs);
         console.log(docs.index);
-        if (docs == "undefined")
+        if (!docs.length)
             index = 0;
         else
             index = docs.index;
@@ -31,7 +31,7 @@ function list_m_add(id) {
 function list_w_add(id) {
     var index;
     list_w.findOne({}).sort('-index').exec(function (err, docs) {
-        if (docs == "undefined")
+        if (!docs.length)
             index = 0;
         else
             index = docs.index;
