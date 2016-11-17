@@ -11,7 +11,7 @@ var user = require('./models/user');
 var io = require('socket.io')(server);
 var FCM = require('fcm').FCM;
 
-var apiKey = '';
+var apiKey = ' AIzaSyBmGGlEtd_i9xQojvh0KNqNzgaid2SNgXc';
 var fcm = new FCM(apiKey);
 function list_m_add(id) {
     var index;
