@@ -77,36 +77,34 @@ function send_fcm(m_id, w_id) {
     var m_token, w_token;
     user.findOne({user_id: m_id}).exec(function (err, docs) {
         m_token = docs.user_token;
+        var message_m = {
+            registration_id: m_token, // required
+            collapse_key: Date.now(),
+            'w_id': w_id
+        };
+        fcm.send(message_m, function (err, messageId) {
+            if (err) {
+                console.log("Something has gone wrong!");
+            } else {
+                console.log("Sent with m_message ID: ", messageId);
+            }
+        })
     })
     user.findOne({user_id: w_id}).exec(function (err, docs) {
         w_token = docs.user_token;
+        var message_w = {
+            registration_id: w_token, // required
+            collapse_key: Date.now(),
+            'm_id': m_id
+        };
+        fcm.send(message_w, function (err, messageId) {
+            if (err) {
+                console.log("Something has gone wrong!");
+            } else {
+                console.log("Sent with w_message ID: ", messageId);
+            }
+        });
     })
-    var message_m = {
-        registration_id: m_token, // required
-        collapse_key: Date.now(),
-        'w_id': w_id
-    };
-    var message_w = {
-        registration_id: w_token, // required
-        collapse_key: Date.now(),
-        'm_id': m_id
-    };
-
-
-    fcm.send(message_m, function (err, messageId) {
-        if (err) {
-            console.log("Something has gone wrong!");
-        } else {
-            console.log("Sent with m_message ID: ", messageId);
-        }
-    });
-    fcm.send(message_w, function (err, messageId) {
-        if (err) {
-            console.log("Something has gone wrong!");
-        } else {
-            console.log("Sent with w_message ID: ", messageId);
-        }
-    });
     user.findOne({user_id: m_id}).exec(function (err, doc) { //검색중 끄고 test모드 시작
         console.log(doc);
         if (doc.user_on_search == "1") //검색중인지 여부
