@@ -137,7 +137,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 server.listen(9000, function () {
-    setInterval(function(){ search()}, 10000); //10분
+    setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
 io.sockets.on('connection', function (socket) {
