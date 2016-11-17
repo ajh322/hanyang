@@ -6,5 +6,5 @@ var userSchema = new mongoose.Schema({
     index:{type:Number},
     user_id:{type:String}
 });
-var user = mongoose.model('user', userSchema, "list_w");
+var user = mongoose.model('list_w', userSchema, "list_w");
 module.exports = list_w
