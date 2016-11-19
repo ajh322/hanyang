@@ -13,7 +13,7 @@ var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
 var FCM = require('fcm').FCM;
 
-var apiKey = ' AAAAV6hY7z8:APA91bElmo4WNQ3eLEC-ziqSp13T0UQRxr65SL01BKnYt6uBCCqm7fYXBo13n-SiBYHtKJH2H1BKW-5livYc-4-tMVFRn-HJcn0ddrFczeUkkczWCfGz9eAlN_Hz2IShmrNd3VVOqc9NNdgpT-PZuNfE2r65UxBnRw';
+var apiKey = 'AIzaSyDr5GnfLuBfoBBNUikH01on6eD5r2g4uTg';
 var fcm = new FCM(apiKey);
 function list_m_add(id) {
     var index;
