@@ -5,7 +5,7 @@ var http = require('http');
 var server = http.Server(app);
 var bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://35.163.104.205:27017/user');
+mongoose.connect('mongodb://35.161.80.18:27017/user');
 var conn = mongoose.connection;
 var user = require('./models/user');
 var list_m = require('./models/list_m');
