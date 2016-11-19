@@ -13,7 +13,7 @@ var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
 var FCM = require('fcm').FCM;
 
-var apiKey = ' AIzaSyBmGGlEtd_i9xQojvh0KNqNzgaid2SNgXc';
+var apiKey = ' AAAAV6hY7z8:APA91bElmo4WNQ3eLEC-ziqSp13T0UQRxr65SL01BKnYt6uBCCqm7fYXBo13n-SiBYHtKJH2H1BKW-5livYc-4-tMVFRn-HJcn0ddrFczeUkkczWCfGz9eAlN_Hz2IShmrNd3VVOqc9NNdgpT-PZuNfE2r65UxBnRw';
 var fcm = new FCM(apiKey);
 function list_m_add(id) {
     var index;
@@ -148,7 +148,7 @@ app.use(bodyParser.urlencoded({
 }));
 server.listen(9000, function () {
     var message_m = {
-        registration_id: "cNuZ1HZ0Pp0:APA91bGzPiIp_KxN-9ThcamyoQeF7O52WStAVKVaG1AajhmY2-jW8EeOcXizZ5xNsiBTvutSdOeKkX0cv7d70sIne1vvQjEW0VWmNJG1ZdcBeOCaj8l-8VR8wmp9MWHeeUatXa4kD3V8", // required
+        registration_id: "fJrB_cF63zE:APA91bEuIgPx7jygNlC2fKGajEAac3U8sxS2mFXNhyW0kFf46TpAy1DRE6uhYbBUsJSHV0cV8Swf095KCPnmtt5Qku-VaXf8-hKi6k-_cF9_TXQIf0a8Mv3fg0TfBalogDtGrcr1p5lg", // required
         collapse_key: Date.now(),
         'w_id': "hi"
     };
