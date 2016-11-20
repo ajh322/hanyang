@@ -156,7 +156,7 @@ function sendMessageToUser(deviceId, user_id) {
             {
                 notification: {
                     body: "상대방을 찾았습니다!",
-                    click_action:"com.hanyang.ajh.hanyang_cc.test"
+                    click_action:"android.intent.action.test"
                 },
                 data: {},
                 //"to": deviceId
