@@ -159,7 +159,7 @@ server.listen(9000, function () {
 
     fcm.send(message, function(err, response){
         if (err) {
-            console.log("Something has gone wrong!");
+            console.log(err);
         } else {
             console.log("Successfully sent with response: ", response);
         }
