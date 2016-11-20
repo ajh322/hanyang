@@ -144,7 +144,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-function sendMessageToUser(deviceId, message) {
+function sendMessageToUser(deviceId, user_id) {
     request({
         url: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
@@ -154,8 +154,13 @@ function sendMessageToUser(deviceId, message) {
         },
         body: JSON.stringify(
             {
-                "notification":{"body":"hi"},
-                "to": "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
+                notification: {
+                    body: "상대방을 찾았습니다!",
+                    click_action:"OPEN_TEST_PAGE"
+                },
+                data: {},
+                //"to": deviceId
+                to: "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
             }
         )
     }, function (error, response, body) {
