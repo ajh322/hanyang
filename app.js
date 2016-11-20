@@ -160,7 +160,7 @@ function sendMessageToUser(deviceId, user_id) {
                 },
                 data: {
                     "id": 1,
-                    "missedRequests": 5
+                    "missedRequests": 5,
                     "addAnyDataHere": 123
                 },
                 //"to": deviceId
