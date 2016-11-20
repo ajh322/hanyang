@@ -156,9 +156,13 @@ function sendMessageToUser(deviceId, user_id) {
             {
                 notification: {
                     body: "상대방을 찾았습니다!",
-                    click_action:"OPEN_ACTIVITY_1"
+                        click_action:"OPEN_ACTIVITY_1"
                 },
-                data: {},
+                data: {
+                    "id": 1,
+                    "missedRequests": 5
+                    "addAnyDataHere": 123
+                },
                 //"to": deviceId
                 to: "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
             }
