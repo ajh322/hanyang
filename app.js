@@ -11,10 +11,11 @@ var user = require('./models/user');
 var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
-var FCM = require('fcm').FCM;
+var FCM = require('fcm-push');
 
-var apiKey = 'AIzaSyA1E7pqGgVjKZpayeBwtEXmE2WvN4hHE1s';
-var fcm = new FCM(apiKey);
+var serverKey = 'AIzaSyA1E7pqGgVjKZpayeBwtEXmE2WvN4hHE1s';
+var fcm = new FCM(serverKey);
+
 function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
@@ -147,18 +148,22 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 server.listen(9000, function () {
-    var message_m = {
-        registration_id: "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu", // required
+    var message = {
+        to: 'dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu', // required fill with device token or topics
         collapse_key: Date.now(),
-        'w_id': "hi"
+        notification: {
+            title: 'Title of your push notification',
+            body: 'Body of your push notification'
+        }
     };
-    fcm.send(message_m, function (err, messageId) {
+
+    fcm.send(message, function(err, response){
         if (err) {
             console.log("Something has gone wrong!");
         } else {
-            console.log("Sent with m_message ID: ", messageId);
+            console.log("Successfully sent with response: ", response);
         }
-    })
+    });
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
