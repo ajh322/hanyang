@@ -153,11 +153,11 @@ function sendMessageToUser(deviceId, user_id) {
             'Authorization': 'key=AAAAZSqy11g:APA91bEyvoVvD7r2XkV1tiKAgeE9zhueIzQCj6YX2E85RuB5-ai754eg6QU4D8rUjMbFBFS3trZ2trXdH2i1q01K1dDDVyOkev_zHmsqp8n6ypvL_qYXpJwiZ8r7Z5iTos9cpWk1HK2rlnJJxFT7lamJ6nsopRTQWg'
         },
         body: JSON.stringify(
-            {
+            {/*
                 notification: {
                     body: "상대방을 찾았습니다!",
                         click_action:"OPEN_ACTIVITY_1"
-                },
+                },*/
                 data: {
                     "id": 1,
                     "missedRequests": 5,
