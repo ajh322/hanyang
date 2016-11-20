@@ -11,7 +11,6 @@ var user = require('./models/user');
 var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
-var FCM = require('fcm-push');
 var request = require('request');
 
 var serverKey = 'AAAAZSqy11g:APA91bEyvoVvD7r2XkV1tiKAgeE9zhueIzQCj6YX2E85RuB5-ai754eg6QU4D8rUjMbFBFS3trZ2trXdH2i1q01K1dDDVyOkev_zHmsqp8n6ypvL_qYXpJwiZ8r7Z5iTos9cpWk1HK2rlnJJxFT7lamJ6nsopRTQWg';
@@ -158,9 +157,7 @@ function sendMessageToUser(deviceId, message) {
         },
         body: JSON.stringify(
             {
-                "data": {
-                    "message": message
-                },
+                "notification":{"body":"hi"},
                 "to": "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
             }
         )
