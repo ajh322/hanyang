@@ -12,6 +12,7 @@ var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
 var io = require('socket.io')(server);
 var FCM = require('fcm-push');
+var request = require('request');
 
 var serverKey = 'AAAAZSqy11g:APA91bEyvoVvD7r2XkV1tiKAgeE9zhueIzQCj6YX2E85RuB5-ai754eg6QU4D8rUjMbFBFS3trZ2trXdH2i1q01K1dDDVyOkev_zHmsqp8n6ypvL_qYXpJwiZ8r7Z5iTos9cpWk1HK2rlnJJxFT7lamJ6nsopRTQWg';
 var fcm = new FCM(serverKey);
@@ -147,23 +148,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-server.listen(9000, function () {
-    var message = {
-        to: 'dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu', // required fill with device token or topics
-        collapse_key: Date.now(),
-        notification: {
-            title: 'Title of your push notification',
-            body: 'Body of your push notification'
+function sendMessageToUser(deviceId, message) {
+    request({
+        url: 'https://fcm.googleapis.com/fcm/send',
+        method: 'POST',
+        headers: {
+            'Content-Type': ' application/json',
+            'Authorization': 'key=AAAAZSqy11g:APA91bEyvoVvD7r2XkV1tiKAgeE9zhueIzQCj6YX2E85RuB5-ai754eg6QU4D8rUjMbFBFS3trZ2trXdH2i1q01K1dDDVyOkev_zHmsqp8n6ypvL_qYXpJwiZ8r7Z5iTos9cpWk1HK2rlnJJxFT7lamJ6nsopRTQWg'
+        },
+        body: JSON.stringify(
+            {
+                "data": {
+                    "message": message
+                },
+                "to": "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
+            }
+        )
+    }, function (error, response, body) {
+        if (error) {
+            console.error(error, response, body);
         }
-    };
-
-    fcm.send(message, function(err, response){
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Successfully sent with response: ", response);
+        else if (response.statusCode >= 400) {
+            console.error('HTTP Error: ' + response.statusCode + ' - ' + response.statusMessage + '\n' + body);
+        }
+        else {
+            console.log('Done!')
         }
     });
+}
+server.listen(9000, function () {
+    sendMessageToUser(
+        "d7x...KJQ",
+        {message: 'Hello puf'}
+    );
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
