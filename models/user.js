@@ -6,7 +6,7 @@ var userSchema = new mongoose.Schema({
     user_id: {type:String,required:true,unique:true},
     user_pw:{type:String},
     user_name:{type:String},
-    user_gender:{type:String},
+    user_gender:{type:String}, //남성,여성
     user_species:{type:String},
     user_first:{type:String,default:"0"}, //최초소개팅 했음
     user_session:{type:String},

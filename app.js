@@ -71,63 +71,54 @@ function search() {
 
 
 }
-function send_fcm(m_id, w_id) {
+function make_test_state(m_id, w_id) {
     var m_token, w_token;
-    user.findOne({user_id: m_id}).exec(function (err, docs) {
-        m_token = docs.user_token;
-        var message_m = {
-            registration_id: m_token, // required
-            collapse_key: Date.now(),
-            'w_id': w_id
-        };
-        fcm.send(message_m, function (err, messageId) {
-            if (err) {
-                console.log("Something has gone wrong!");
-            } else {
-                console.log("Sent with m_message ID: ", messageId);
+    user.find({$or: [{user_id: m_id}, {user_id: w_id}]}).exec(function (err, docs) {
+            docs.forEach(doc in docs)
+            {
+                if (doc.user_gender == "남성") {
+                    console.log(doc);
+                    m_token = doc.user_token;
+                    var message_m = {
+                        status: "test",
+                        'target_id': w_id //여기다가 다른것들도 추가해야함.
+                    };
+                    if (doc.user_on_search == "1") //검색중인지 여부
+                    {
+                        doc.user_on_search = "0";
+                        doc.user_on_test = "1";
+                        doc.save();
+                        console.log("취소 정상적으로 해결");
+                        sendMessageToUser(m_token, {message: message_m});
+                    }
+                    else {
+                        console.log("취소 불가");
+                    }
+                }
+                else {
+                    console.log(doc);
+                    w_token = doc.user_token;
+                    var message = {
+                        status: "test",
+                        'target_id': w_id //여기다가 다른것들도 추가해야함.
+                    };
+                    if (doc.user_on_search == "1") //검색중인지 여부
+                    {
+                        doc.user_on_search = "0";
+                        doc.user_on_test = "1";
+                        doc.save();
+                        console.log("취소 정상적으로 해결");
+                        sendMessageToUser(m_token, {message: message});
+                    }
+                    else {
+                        console.log("취소 불가");
+                    }
+
+                }
+
             }
-        })
-    })
-    user.findOne({user_id: w_id}).exec(function (err, docs) {
-        w_token = docs.user_token;
-        var message_w = {
-            registration_id: w_token, // required
-            collapse_key: Date.now(),
-            'm_id': m_id
-        };
-        fcm.send(message_w, function (err, messageId) {
-            if (err) {
-                console.log("Something has gone wrong!");
-            } else {
-                console.log("Sent with w_message ID: ", messageId);
-            }
-        });
-    })
-    user.findOne({user_id: m_id}).exec(function (err, doc) { //검색중 끄고 test모드 시작
-        console.log(doc);
-        if (doc.user_on_search == "1") //검색중인지 여부
-        {
-            doc.user_on_search = "0";
-            doc.user_on_test = "1";
-            doc.save();
-            console.log("취소 정상적으로 해결");
         }
-        else {
-            console.log("취소 불가");
-        }
-    })
-    user.findOne({user_id: w_id}).exec(function (err, doc) {
-        console.log(doc);
-        if (doc.user_on_search == "1") //검색중인지 여부
-        {
-            doc.user_on_search = "0";
-            doc.save();
-            console.log("취소 정상적으로 해결");
-        }
-        else {
-            console.log("취소 불가");
-        }
-    })
+    )
 }
 function test(m_id, w_id) {
     //db에서 저거된사람들의 인덱스값을 지워야함. 나중에 인덱스0번을 통하여 우선순위기능 해야할듯.
@@ -138,13 +129,13 @@ function test(m_id, w_id) {
         console.log(err);
     });
     //알림가야하고 앱에서 서로의 프로필이 나와야함.
-    send_fcm(m_id, w_id);
+    make_test_state(m_id, w_id);
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-function sendMessageToUser(deviceId, user_id) {
+function sendMessageToUser(deviceId, message) {
     request({
         url: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
@@ -156,15 +147,11 @@ function sendMessageToUser(deviceId, user_id) {
             {
                 notification: {
                     body: "상대방을 찾았습니다!",
-                        click_action:"OPEN_ACTIVITY_1"
+                    click_action: "OPEN_ACTIVITY_1"
                 },
-                data: {
-                    "id": 1,
-                    "missedRequests": 5,
-                    "addAnyDataHere": 123
-                },
+                data: message,
                 //"to": deviceId
-                to: "dAeAb15IukU:APA91bGKXW8tUeG1c6UHArHGSxy7du_sp5NeCJ29VZNjoSTD2cFwKDuuEmAPBMxsOByLZKOS3v8CVxs3IP_rJXaB-rqTQADLaY_ax0nH1Iqy4oWVOfTTauKcIXSV2Zr7G_SoiOZ9iblu"
+                to: deviceId
             }
         )
     }, function (error, response, body) {
@@ -180,10 +167,6 @@ function sendMessageToUser(deviceId, user_id) {
     });
 }
 server.listen(9000, function () {
-    sendMessageToUser(
-        "d7x...KJQ",
-        {message: 'Hello puf'}
-    );
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
