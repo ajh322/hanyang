@@ -74,7 +74,7 @@ function search() {
 function make_test_state(m_id, w_id) {
     var m_token, w_token;
     user.find({$or: [{user_id: m_id}, {user_id: w_id}]}).exec(function (err, docs) {
-            for (var doc in docs) {
+            docs.forEach(function (doc) {
                 if (doc.user_gender == "남성") {
                     console.log(doc);
                     m_token = doc.user_token;
@@ -115,7 +115,7 @@ function make_test_state(m_id, w_id) {
 
                 }
 
-            }
+            })
         }
     )
 }
