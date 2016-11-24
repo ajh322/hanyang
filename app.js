@@ -201,7 +201,9 @@ app.get('/', function (req, res) {
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc_f) {
+        console.log(doc_f);
         user.findOne({user_id: doc_f.user_target_id}).exec(function (err, doc_l) {
+            console.log(doc_l);
             res.end(JSON.stringify(doc_l));
         })
     })
