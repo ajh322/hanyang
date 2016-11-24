@@ -72,23 +72,18 @@ function search() {
 
 }
 function make_test_state(m_id, w_id) {
-    var m_token, w_token;
     user.find({$or: [{user_id: m_id}, {user_id: w_id}]}).exec(function (err, docs) {
             docs.forEach(function (doc) {
                 if (doc.user_gender == "남성") {
                     console.log(doc);
-                    m_token = doc.user_token;
-                    var message_m = {
-                        status: "test",
-                        'target_id': w_id //여기다가 다른것들도 추가해야함.
-                    };
                     if (doc.user_on_search == "1") //검색중인지 여부
                     {
                         doc.user_on_search = "0";
                         doc.user_on_test = "1";
+                        doc.user_target_id = w_id;
                         doc.save();
                         console.log("취소 정상적으로 해결");
-                        sendMessageToUser(m_token, {message: message_m});
+                        sendMessageToUser(doc.user_token, {status:"test"});
                     }
                     else {
                         console.log("취소 불가");
@@ -96,18 +91,14 @@ function make_test_state(m_id, w_id) {
                 }
                 else {
                     console.log(doc);
-                    w_token = doc.user_token;
-                    var message = {
-                        status: "test",
-                        'target_id': w_id //여기다가 다른것들도 추가해야함.
-                    };
                     if (doc.user_on_search == "1") //검색중인지 여부
                     {
                         doc.user_on_search = "0";
                         doc.user_on_test = "1";
+                        doc.user_target_id = m_id;
                         doc.save();
                         console.log("취소 정상적으로 해결");
-                        sendMessageToUser(m_token, {message: message});
+                        sendMessageToUser(doc.user_token, {status: "test"});
                     }
                     else {
                         console.log("취소 불가");
@@ -207,7 +198,60 @@ app.get('/', function (req, res) {
      conn.collection('user').insert(user);
      res.send('Hello World!');*/
 });
+app.get('/get_target_data', function (req, res) {
+    console.log("target_data_needed");
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc_f) {
+        user.findOne({user_id: doc_f.user_target_id}).exec(function (err, doc_l) {
+            res.end(JSON.stringify(doc_l));
+        })
+    })
+});
+app.get('/test_ans', function (req, res) {
+    console.log("test_answer");
+    if (req.body.user_answer == "수락") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
+        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
+                if (doc_l.user_like == "1") {
+                    //메시지발송하기
+                    doc_l.user_on_chat = "1";
+                    doc_l.user_on_test = "0";
+                    doc_l.save();
+                    doc.user_on_chat = "1";
+                    doc.user_on_test = "0";
+                    doc.save();
+                    sendMessageToUser(doc_l.user_token, {status: "chat"});
+                    sendMessageToUser(doc.user_token, {status: "chat"});
+                    res.end("fighting");
+                }
+                else {
+                    doc.user_like = "1";
+                    doc.save();
+                    sendMessageToUser(doc_l.token, {status: "one_more"}); //상대방에게 좋아요
+                    res.end("fighting");
+                }
+            })
 
+        })
+    }
+    else if (req.body.user_answer == "거절")//전부 파토내버림 ㅃㅃ
+    {
+        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
+                doc_l.user_target_id = "";
+                doc_l.user_on_test = "0";
+                doc_l.like = "0";
+                doc_l.save();
+                doc.user_target_id = "";
+                doc.like = "0";
+                doc.user_on_test = "0";
+                doc.save();
+                sendMessageToUser(doc_l.user_token, {status: "re"});
+                sendMessageToUser(doc.user_token, {status: "re"});
+                res.end("bye");
+            })
+        })
+    }
+});
 app.post('/send_token', function (req, res) {
     console.log('token');
     console.log(req.body);
@@ -320,6 +364,7 @@ app.post('/search_cancel', function (req, res) { //남자 검색하러옴
         if (doc.user_on_search == "1") //검색중인지 여부
         {
             doc.user_on_search = "0";
+            doc.user_target_id = "";
             doc.save();
             console.log("취소 정상적으로 해결");
             res.end("success");
