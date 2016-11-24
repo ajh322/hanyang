@@ -198,7 +198,7 @@ app.get('/', function (req, res) {
      conn.collection('user').insert(user);
      res.send('Hello World!');*/
 });
-app.get('/get_target_data', function (req, res) {
+app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc_f) {
         user.findOne({user_id: doc_f.user_target_id}).exec(function (err, doc_l) {
