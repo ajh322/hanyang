@@ -230,7 +230,7 @@ app.post('/test_ans', function (req, res) {
                 else {
                     doc.user_like = "1";
                     doc.save();
-                    sendMessageToUser(doc_l.token, {status: "one_more"}); //상대방에게 좋아요
+                    sendMessageToUser(doc_l.user_token, {status: "one_more"}); //상대방에게 좋아요
                     console.log("2");
                     res.end("fighting");
                 }
