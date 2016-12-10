@@ -316,7 +316,7 @@ app.post('/check_session', function (req, res) {
             doc["user_token"] = req.body.user_token;
             doc.save();
             console.log(doc);
-            res.end(doc)
+            res.end(JSON.stringify(doc))
         }
         else {
             res.end("unmatch")
