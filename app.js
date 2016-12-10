@@ -126,26 +126,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 function sendMessageToUser(deviceId, message) {
-    var body, click_action;
-    switch (message)
-    {
-        case "test" :
-            body="상대방을 찾았습니다!";
-            click_action="OPEN_ACTIVITY_1";
-            break;
-        case "chat" :
-            body="대화가 시작됩니다!";
-            click_action="OPEN_ACTIVITY_1";
-            break;
-        case "re" :
-            body="매칭이 취소되었습니다...";
-            click_action="OPEN_ACTIVITY_1";
-            break;
-        case "one_more" :
-            body="상대방이 수락했습니다!";
-            click_action="OPEN_ACTIVITY_1";
-            break;
-    }
     request({
         url: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
@@ -156,8 +136,8 @@ function sendMessageToUser(deviceId, message) {
         body: JSON.stringify(
             {
                 notification: {
-                    body: body,
-                    click_action: click_action
+                    body: "상대방을 찾았습니다!",
+                    click_action: "OPEN_ACTIVITY_1"
                 },
                 data: message,
                 //"to": deviceId
