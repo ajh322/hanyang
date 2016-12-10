@@ -83,7 +83,7 @@ function make_test_state(m_id, w_id) {
                         doc.user_target_id = w_id;
                         doc.save();
                         console.log("취소 정상적으로 해결");
-                        sendMessageToUser(doc.user_token, {status:"test"});
+                        sendMessageToUser(doc.user_token, {status: "test"});
                     }
                     else {
                         console.log("취소 불가");
@@ -208,9 +208,9 @@ app.post('/get_target_data', function (req, res) {
         })
     })
 });
-app.get('/test_ans', function (req, res) {
+app.post('/test_ans', function (req, res) {
     console.log("test_answer");
-    if (req.body.user_answer == "수락") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
+    if (req.body.user_answer == "accpet") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
                 if (doc_l.user_like == "1") {
@@ -235,7 +235,7 @@ app.get('/test_ans', function (req, res) {
 
         })
     }
-    else if (req.body.user_answer == "거절")//전부 파토내버림 ㅃㅃ
+    else if (req.body.user_answer == "reject")//전부 파토내버림 ㅃㅃ
     {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
@@ -316,7 +316,7 @@ app.post('/check_session', function (req, res) {
             doc["user_token"] = req.body.user_token;
             doc.save();
             console.log(doc);
-            res.end("match")
+            res.end(doc)
         }
         else {
             res.end("unmatch")
