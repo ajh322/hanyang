@@ -211,7 +211,7 @@ app.post('/get_target_data', function (req, res) {
 app.post('/test_ans', function (req, res) {
     console.log("test_answer");
     console.log(req.body);
-    if (req.body.user_answer == "accpet") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
+    if (req.body.user_ans == "accpet") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
                 if (doc_l.user_like == "1") {
