@@ -238,7 +238,7 @@ app.post('/test_ans', function (req, res) {
 
         })
     }
-    else if (req.body.user_answer == "reject")//전부 파토내버림 ㅃㅃ
+    else if (req.body.user_ans == "reject")//전부 파토내버림 ㅃㅃ
     {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
