@@ -127,8 +127,6 @@ app.use(bodyParser.urlencoded({
 }));
 function sendMessageToUser(deviceId, message) {
     var str_body, str_click_action;
-    console.log(message.status);
-    console.log(JSON.stringify(message).status);
     switch(message.status)
     {
         case 'test':
@@ -162,8 +160,8 @@ function sendMessageToUser(deviceId, message) {
         body: JSON.stringify(
             {
                 notification: {
-                    body: "상대방을 찾았습니다!",
-                    click_action: "OPEN_ACTIVITY_test"
+                    body: str_body,
+                    click_action: str_click_action
                 },
                 data: message,
                 //"to": deviceId
