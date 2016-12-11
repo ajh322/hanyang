@@ -126,24 +126,24 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 function sendMessageToUser(deviceId, message) {
-    var body, click_action;
+    var str_body, str_click_action;
     switch(message)
     {
         case 'test':
-            body="상대방을 찾았습니다!";
-            click_action="OPEN_ACTIVITY_test";
+            str_body="상대방을 찾았습니다!";
+            str_click_action="OPEN_ACTIVITY_test";
             break;
         case 'chat':
-            body="대화가 시작됩니다!";
-            click_action="OPEN_ACTIVITY_chat";
+            str_body="대화가 시작됩니다!";
+            str_click_action="OPEN_ACTIVITY_chat";
             break;
         case 'one_more':
-            body="상대방이 수락했습니다!";
-            click_action="OPEN_ACTIVITY_test";
+            str_body="상대방이 수락했습니다!";
+            str_click_action="OPEN_ACTIVITY_test";
             break;
         case 're':
-            body="거절당했습니다.";
-            click_action="OPEN_ACTIVITY_main";
+            str_body="거절당했습니다.";
+            str_click_action="OPEN_ACTIVITY_main";
             break;
     }
     request({
@@ -156,8 +156,8 @@ function sendMessageToUser(deviceId, message) {
         body: JSON.stringify(
             {
                 notification: {
-                    body: body,
-                    click_action: click_action
+                    body: str_body,
+                    click_action: str_click_action
                 },
                 data: message,
                 //"to": deviceId
