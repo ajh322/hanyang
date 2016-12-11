@@ -329,6 +329,15 @@ app.post('/check_session', function (req, res) {
         }
     })
 })
+app.post('/debug_session', function (req, res) {
+    console.log("세선디버그 가:");
+    user.findOne({user_id: "가"}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+        doc.save();
+        res.end(JSON.stringify(doc))
+    })
+})
 
 app.post('/search_m', function (req, res) { //남자 검색하러옴
     console.log("외로운 남자:" + req.body);
