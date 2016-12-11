@@ -130,6 +130,7 @@ function sendMessageToUser(deviceId, message) {
     switch(message)
     {
         case 'test':
+            console.log("1");
             str_body="상대방을 찾았습니다!";
             str_click_action="OPEN_ACTIVITY_test";
             break;
@@ -144,6 +145,9 @@ function sendMessageToUser(deviceId, message) {
         case 're':
             str_body="거절당했습니다.";
             str_click_action="OPEN_ACTIVITY_main";
+            break;
+        default:
+            console.log("err");
             break;
     }
     request({
