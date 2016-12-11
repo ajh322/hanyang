@@ -127,7 +127,7 @@ app.use(bodyParser.urlencoded({
 }));
 function sendMessageToUser(deviceId, message) {
     var str_body, str_click_action;
-    switch(message)
+    switch(JSON.stringify(message).status)
     {
         case 'test':
             console.log("1");
