@@ -157,7 +157,7 @@ function sendMessageToUser(deviceId, message) {
             {
                 notification: {
                     body: body,
-                    click_action: click_action
+                    click_action: "OPEN_ACTIVITY_1"
                 },
                 data: message,
                 //"to": deviceId
