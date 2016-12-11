@@ -156,8 +156,8 @@ function sendMessageToUser(deviceId, message) {
         body: JSON.stringify(
             {
                 notification: {
-                    body: body,
-                    click_action: "OPEN_ACTIVITY_1"
+                    body: "상대방을 찾았습니다!",
+                    click_action: "OPEN_ACTIVITY_test"
                 },
                 data: message,
                 //"to": deviceId
