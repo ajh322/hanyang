@@ -127,6 +127,7 @@ app.use(bodyParser.urlencoded({
 }));
 function sendMessageToUser(deviceId, message) {
     var str_body, str_click_action;
+    console.log(JSON.stringify(message).status);
     switch(JSON.stringify(message).status)
     {
         case 'test':
@@ -184,6 +185,7 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
+    sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
     //room join
