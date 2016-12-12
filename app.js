@@ -275,6 +275,10 @@ app.post('/add_chat', function (req, res) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             //find the index
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+                var val = 0;
+                //send notification to target_id
+                
+                res.end("success");
             })
 
         });
