@@ -306,8 +306,8 @@ app.post('/test_ans', function (req, res) {
                 if (doc_l.user_like == "1") {
 
                     //set user's chat_name data
-                    doc.chat_name = id + "/" + id_l;
-                    doc_l.chat_name = id + "/" + id_l;
+                    doc.chat_name = doc.body.user_id + "/" + doc.body.user_target_id;
+                    doc_l.chat_name = doc.body.user_id + "/" + doc.body.user_target_id;
 
                     //메시지발송하기
                     doc_l.user_on_chat = "1";
