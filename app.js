@@ -280,7 +280,7 @@ app.post('/add_chat', function (req, res) {
 
             //target token initialize
             user.findOne({user_id:doc.user_target_id}).exec(function (err, doc_1) {
-                target_token=doc_1.target_token;
+                target_token=doc_1.user_token;
             })
 
             //find the index
