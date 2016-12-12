@@ -189,12 +189,6 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    var chat_Schema = chat;
-    var model = mongoose.model("4/2", chat_Schema, "4/2");
-    model.findOne({}).exec(function (err, doc_l) {
-        console.log(doc_l);
-    })
-    ;
     //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
