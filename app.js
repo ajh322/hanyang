@@ -184,7 +184,9 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
+    var thingSchema = chat;
+    var Thing = mongoose.model(id + "/" + id_l, thingSchema);
+    //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
     //room join
@@ -240,15 +242,7 @@ function make_chat(id, id_l) {
         //first document
         collection.insert({index: 0, msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~"});
     });*/
-    var thingSchema = chat;
-    var Thing = mongoose.model(id + "/" + id_l, thingSchema);
-    var thing = new Thing($arrayObj);
-    thing.save();
 
-    //strict, if true then values passed to our model constructor that were not specified in our schema do not get saved to the db.
-//collection, for prevent from auto append 's'.
-
-    var Thing = mongoose.model('mycollection', thingSchema);
     var thing = new Thing($arrayObj);
     thing.save();
     var message = {
