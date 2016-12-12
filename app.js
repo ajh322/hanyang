@@ -275,7 +275,7 @@ app.post('/add_chat', function (req, res) {
             sendMessageToUser(doc.user_target_id, {status: "add_chat"});
 
             //find the index
-            get_chat_model("ㄱ/ㄴ").findOne({}).sort('-index').exec(function (err, doc_l) {
+            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
                 val = doc_l.index;
                 doc_l.index++;
                 doc_l.save();
@@ -287,7 +287,7 @@ app.post('/add_chat', function (req, res) {
                 msg: req.body.msg,
                 index: val + 1
             };
-            conn.collection('chat').insert(message);
+            conn.collection(doc.chat_name).insert(message);
             res.end("success");
         });
     } catch (e) {
