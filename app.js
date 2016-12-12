@@ -185,7 +185,7 @@ server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
     var thingSchema = chat;
-    var Thing = mongoose.model(id + "/" + id_l, thingSchema);
+    var Thing = mongoose.model("testing", thingSchema);
     //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
