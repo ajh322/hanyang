@@ -189,7 +189,7 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    get_chat_model("4/2").find().sort(['index'],['descending']).all(function (err, doc_l) {
+    get_chat_model("4/2").find().sort([['index'],['descending']]).all(function (err, doc_l) {
         val = doc_l[0].index;
         doc_l[0].index++;
         doc_l[0].save();
