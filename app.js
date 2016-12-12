@@ -10,6 +10,7 @@ var conn = mongoose.connection;
 var user = require('./models/user');
 var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
+var chat = require('./models/chat');
 var io = require('socket.io')(server);
 var request = require('request');
 
@@ -127,24 +128,23 @@ app.use(bodyParser.urlencoded({
 }));
 function sendMessageToUser(deviceId, message) {
     var str_body, str_click_action;
-    switch(message.status)
-    {
+    switch (message.status) {
         case 'test':
             console.log("1");
-            str_body="상대방을 찾았습니다!";
-            str_click_action="OPEN_ACTIVITY_test";
+            str_body = "상대방을 찾았습니다!";
+            str_click_action = "OPEN_ACTIVITY_test";
             break;
         case 'chat':
-            str_body="대화가 시작됩니다!";
-            str_click_action="OPEN_ACTIVITY_chat";
+            str_body = "대화가 시작됩니다!";
+            str_click_action = "OPEN_ACTIVITY_chat";
             break;
         case 'one_more':
-            str_body="상대방이 수락했습니다!";
-            str_click_action="OPEN_ACTIVITY_test";
+            str_body = "상대방이 수락했습니다!";
+            str_click_action = "OPEN_ACTIVITY_test";
             break;
         case 're':
-            str_body="거절당했습니다.";
-            str_click_action="OPEN_ACTIVITY_main";
+            str_body = "거절당했습니다.";
+            str_click_action = "OPEN_ACTIVITY_main";
             break;
         default:
             console.log("err");
@@ -234,10 +234,62 @@ app.post('/get_target_data', function (req, res) {
         })
     })
 });
+function make_chat(id, id_l) {
+    //collection name : user_id+"/"+user_id
+    conn.createCollection(id + "/" + id_l, function (err, collection) {
+        //first document
+        collection.insert({index: 0, msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~"});
+    });
+}
+app.post('/add_chat', function (req, res) {
+    /*
+     req.body parm
+     String user_id
+     String msg
+
+     res
+     no specific json data
+     just "success" or "error"
+
+     push notification to target_id
+     add msg to db
+     */
+    console.log("add_chat");
+    console.log(req.body);
+    try {
+        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+
+            var val = 0;
+            //send notification to target_id
+            sendMessageToUser(doc.user_target_id, {status: "add_chat"});
+
+            //find the index
+            chat.findOne({}, ['index'], {sort: {index: -1}}, function (err, doc) {
+                val = doc.index;
+                doc.index++;
+                doc.save();
+                console.log("index num:" + val);
+            });
+            //add msg to db
+            var message = {
+                sent_by: req.body.user_id,
+                msg: req.body.msg,
+                index: val + 1
+            };
+            conn.collection('chat').insert(message);
+            res.end("success");
+        });
+    } catch (e) {
+        console.log("add_chat err:" + e);
+        res.end("err");
+    }
+})
 app.post('/test_ans', function (req, res) {
     console.log("test_answer");
     console.log(req.body);
-    if (req.body.user_ans == "accept") { //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
+    if (req.body.user_ans == "accept") {
+        //둘다 수락인지 아닌지 확인하고 한명만 수락이면 패스 둘다 수락이면 채팅방 ㄱㄱ
+        //when the match success
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
                 if (doc_l.user_like == "1") {
@@ -251,9 +303,13 @@ app.post('/test_ans', function (req, res) {
                     sendMessageToUser(doc_l.user_token, {status: "chat"});
                     sendMessageToUser(doc.user_token, {status: "chat"});
                     console.log("1");
+
+                    //make chat collection
+                    make_chat(doc.user_id, doc_l.user_id);
                     res.end("chat");
                 }
                 else {
+                    //one person accepted
                     doc.user_like = "1";
                     doc.save();
                     sendMessageToUser(doc_l.user_token, {status: "one_more"}); //상대방에게 좋아요
@@ -264,8 +320,9 @@ app.post('/test_ans', function (req, res) {
 
         })
     }
-    else if (req.body.user_ans == "reject")//전부 파토내버림 ㅃㅃ
-    {
+    else if (req.body.user_ans == "reject") {
+        //전부 파토내버림 ㅃㅃ
+        //reject!
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
                 doc_l.user_target_id = "";
