@@ -189,12 +189,6 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    get_chat_model("ㄱ/ㄴ").findOne({}).sort('-index').exec(function (err, doc_l) {
-        var val = doc_l.index;
-        doc_l.index++;
-        //doc_l.save();
-        console.log("index num:" + val);
-    });
     //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
@@ -281,12 +275,12 @@ app.post('/add_chat', function (req, res) {
             sendMessageToUser(doc.user_target_id, {status: "add_chat"});
 
             //find the index
-            get_chat_model(doc.chat_name).findOne({}, ['index'], {sort: {index: -1}}, function (err, doc_l) {
+            get_chat_model("ㄱ/ㄴ").findOne({}).sort('-index').exec(function (err, doc_l) {
                 val = doc_l.index;
                 doc_l.index++;
                 doc_l.save();
                 console.log("index num:" + val);
-            });
+            })
             //add msg to db
             var message = {
                 sent_by: req.body.user_id,
