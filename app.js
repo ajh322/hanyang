@@ -235,6 +235,7 @@ app.post('/get_target_data', function (req, res) {
     })
 });
 function make_chat(id, id_l) {
+    console.log("making chat")
     //collection name : user_id+"/"+user_id
     /*conn.createCollection(id + "/" + id_l, function (err, collection) {
         //first document
