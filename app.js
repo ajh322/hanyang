@@ -236,10 +236,27 @@ app.post('/get_target_data', function (req, res) {
 });
 function make_chat(id, id_l) {
     //collection name : user_id+"/"+user_id
-    conn.createCollection(id + "/" + id_l, function (err, collection) {
+    /*conn.createCollection(id + "/" + id_l, function (err, collection) {
         //first document
         collection.insert({index: 0, msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~"});
-    });
+    });*/
+    var thingSchema = chat;
+    var Thing = mongoose.model(id + "/" + id_l, thingSchema);
+    var thing = new Thing($arrayObj);
+    thing.save();
+
+    //strict, if true then values passed to our model constructor that were not specified in our schema do not get saved to the db.
+//collection, for prevent from auto append 's'.
+
+    var Thing = mongoose.model('mycollection', thingSchema);
+    var thing = new Thing($arrayObj);
+    thing.save();
+    var message = {
+        sent_by: "admin",
+        msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~",
+        index: 0
+    };
+    conn.collection(id + "/" + id_l).insert(message);
 }
 app.post('/add_chat', function (req, res) {
     /*

@@ -7,5 +7,4 @@ var userSchema = new mongoose.Schema({
     msg: {type:String},
     index:{type:Number,required:true,unique:true}
 });
-var chat = mongoose.model('user', userSchema, "chat");
-module.exports = chat;
+module.exports = userSchema;
