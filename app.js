@@ -14,6 +14,11 @@ var chat = require('./models/chat');
 var io = require('socket.io')(server);
 var request = require('request');
 
+function get_chat_model(chat_id) {
+    var chat_Schema = chat;
+    var model = mongoose.model(chat_id, chat_Schema, chat_id);
+    return model;
+}
 function list_m_add(id) {
     var index;
     list_m.findOne({}).sort('-index').exec(function (err, docs) {
@@ -235,14 +240,11 @@ app.post('/get_target_data', function (req, res) {
     })
 });
 function make_chat(id, id_l) {
-    console.log("making chat")
-    //collection name : user_id+"/"+user_id
-    /*conn.createCollection(id + "/" + id_l, function (err, collection) {
-        //first document
-        collection.insert({index: 0, msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~"});
-    });*/
-    var thingSchema = chat;
-    var Thing = mongoose.model(id + "/" + id_l, thingSchema,id + "/" + id_l);
+    //console.log("making chat")
+    var chat_Schema = chat;
+    //first comment
+    //{ "_id" : ObjectId("584ebda72e278c7076bdf6e4"), "sent_by" : "admin", "msg" : "4님 2님 즐거운 시간 보내세요~", "index" : 0 }
+    mongoose.model(id + "/" + id_l, chat_Schema, id + "/" + id_l);
     var message = {
         sent_by: "admin",
         msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~",
@@ -273,10 +275,10 @@ app.post('/add_chat', function (req, res) {
             sendMessageToUser(doc.user_target_id, {status: "add_chat"});
 
             //find the index
-            chat.findOne({}, ['index'], {sort: {index: -1}}, function (err, doc) {
-                val = doc.index;
-                doc.index++;
-                doc.save();
+            get_chat_model(doc.chat_name).findOne({}, ['index'], {sort: {index: -1}}, function (err, doc_l) {
+                val = doc_l.index;
+                doc_l.index++;
+                doc_l.save();
                 console.log("index num:" + val);
             });
             //add msg to db
@@ -302,12 +304,17 @@ app.post('/test_ans', function (req, res) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_l) {
                 if (doc_l.user_like == "1") {
+
+                    //set user's chat_name data
+                    doc.chat_name = id + "/" + id_l;
+                    doc_l.chat_name = id + "/" + id_l;
+
                     //메시지발송하기
                     doc_l.user_on_chat = "1";
                     doc_l.user_on_test = "0";
-                    doc_l.save();
                     doc.user_on_chat = "1";
                     doc.user_on_test = "0";
+                    doc_l.save();
                     doc.save();
                     sendMessageToUser(doc_l.user_token, {status: "chat"});
                     sendMessageToUser(doc.user_token, {status: "chat"});
