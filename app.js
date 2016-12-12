@@ -151,8 +151,12 @@ function sendMessageToUser(deviceId, message) {
             str_body = "거절당했습니다.";
             str_click_action = "OPEN_ACTIVITY_main";
             break;
+        case 'add_chat':
+            str_body = "메시지가 도착하였습니다.";
+            str_click_action = "OPEN_ACTIVITY_chat";
+            break;
         default:
-            console.log("err");
+            console.log("sendMessageToUser err");
             break;
     }
     request({
@@ -272,7 +276,7 @@ app.post('/add_chat', function (req, res) {
 
             var val = 0;
             //send notification to target_id
-            sendMessageToUser(doc.user_target_id, {status: "add_chat"});
+            sendMessageToUser(doc.user_target_id, {status: "add_chat", msg:req.body.msg});
 
             //find the index
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
