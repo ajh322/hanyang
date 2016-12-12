@@ -280,15 +280,17 @@ app.post('/add_chat', function (req, res) {
                 doc_l.index++;
                 doc_l.save();
                 console.log("index num:" + val);
+
+                //add msg to db
+                var message = {
+                    sent_by: req.body.user_id,
+                    msg: req.body.msg,
+                    index: val + 1
+                };
+                conn.collection(doc.chat_name).insert(message);
+                res.end("success");
             })
-            //add msg to db
-            var message = {
-                sent_by: req.body.user_id,
-                msg: req.body.msg,
-                index: val + 1
-            };
-            conn.collection(doc.chat_name).insert(message);
-            res.end("success");
+
         });
     } catch (e) {
         console.log("add_chat err:" + e);
