@@ -184,8 +184,6 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    var thingSchema = chat;
-    var Thing = mongoose.model("testing", thingSchema);
     //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
 });
 io.sockets.on('connection', function (socket) {
@@ -242,9 +240,8 @@ function make_chat(id, id_l) {
         //first document
         collection.insert({index: 0, msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~"});
     });*/
-
-    var thing = new Thing($arrayObj);
-    thing.save();
+    var thingSchema = chat;
+    var Thing = mongoose.model(id + "/" + id_l, thingSchema,id + "/" + id_l);
     var message = {
         sent_by: "admin",
         msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~",
