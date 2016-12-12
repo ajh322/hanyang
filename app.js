@@ -273,13 +273,11 @@ app.post('/add_chat', function (req, res) {
     console.log(req.body);
     try {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
-
-            var val = 0;
-            //send notification to target_id
-            sendMessageToUser(doc.user_target_id, {status: "add_chat", msg:req.body.msg});
-
             //find the index
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+                var val = 0;
+                //send notification to target_id
+                sendMessageToUser(doc.user_target_id, {status: "add_chat", msg:req.body.msg});
                 val = doc_l.index;
                 doc_l.index++;
                 doc_l.save();
