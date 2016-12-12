@@ -277,14 +277,7 @@ app.post('/add_chat', function (req, res) {
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
                 var val = 0;
                 //send notification to target_id
-                
-                //add msg to db
-                var message = {
-                    sent_by: req.body.user_id,
-                    msg: req.body.msg,
-                    index: val + 1
-                };
-                conn.collection(doc.chat_name).insert(message);
+               
                 res.end("success");
             })
 
