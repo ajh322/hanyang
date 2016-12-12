@@ -279,7 +279,6 @@ app.post('/add_chat', function (req, res) {
                 //send notification to target_id
                 sendMessageToUser(doc.user_target_id, {status: "add_chat", msg:req.body.msg});
                 val = doc_l.index;
-                doc_l.index++;
                 console.log("index num:" + val);
 
                 //add msg to db
@@ -290,7 +289,6 @@ app.post('/add_chat', function (req, res) {
                 };
                 conn.collection(doc.chat_name).insert(message);
                 res.end("success");
-                doc_l.save();
             })
 
         });
