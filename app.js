@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 var mongoose = require('mongoose');
 var http = require('http');
 var server = http.Server(app);
@@ -220,8 +221,8 @@ io.sockets.on('connection', function (socket) {
     });
 })
 app.get('/', function (req, res) {
-    console.log("get");
-    res.end(__dirname + '/index.html');
+    console.log(__dirname);
+    res.sendFile(__dirname + '/index.html');
 });
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
