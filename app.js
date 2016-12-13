@@ -247,6 +247,24 @@ function make_chat(id, id_l) {
     };
     conn.collection(id + "/" + id_l).insert(message);
 }
+app.post('/get_chatdata', function (req, res) {
+    /*
+     get whole chat data
+
+     req.body parm
+     String user_id
+
+     res
+     data exmaple
+     [{index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}]
+     */
+    user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+        get_chat_model(doc.chat_name).find({}).exec(function (err, doc_l) {
+            res.end(JSON.stringify(doc_l));
+        })
+    })
+});
+
 app.post('/add_chat', function (req, res) {
     /*
      req.body parm
