@@ -221,21 +221,7 @@ io.sockets.on('connection', function (socket) {
 })
 app.get('/', function (req, res) {
     console.log("get");
-    res.sendFile(__dirname + '/index.html');
-})
-app.get('/', function (req, res) {
-    console.log("get");
-    res.sendFile(__dirname + '/index.html');
-    /*var user = {
-     user_id: "2016022288",
-     user_pw: "1234",
-     user_name: "지화닝",
-     user_gender: "m",
-     user_species: "건설환경공학과",
-     user_first: "1",
-     };
-     conn.collection('user').insert(user);
-     res.send('Hello World!');*/
+    res.end(__dirname + '/index.html');
 });
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
