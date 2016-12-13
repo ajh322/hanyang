@@ -214,7 +214,7 @@ server.listen(9000, function () {
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
 
                 //send notification to target_id
-                sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                sendMessageToUser(target_token, {status: "add_chat", msg: "테스트"});
                 val = doc_l.index;
                 console.log("index num:" + val);
 
