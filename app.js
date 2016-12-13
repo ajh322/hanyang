@@ -258,6 +258,7 @@ app.post('/get_chatdata', function (req, res) {
      data exmaple
      [{index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}]
      */
+    console.log("get_chatdata");
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         get_chat_model(doc.chat_name).find({}).exec(function (err, doc_l) {
             res.end(JSON.stringify(doc_l));
