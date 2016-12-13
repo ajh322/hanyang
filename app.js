@@ -195,10 +195,35 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    
-    
-    
-    console.log("debug_add_chat");
+});
+io.sockets.on('connection', function (socket) {
+    //room join
+    var josn;
+    console.log("connected!");
+
+    socket.on('join', function (data) {
+        console.log(data);
+        json = JSON.parse(data);
+        console.log(json);
+        console.log(json.userid + "joined" + "roomname:" + json.roomname);
+        socket.join(json.roomname);
+        io.sockets.in(json.roomname).emit('message', json.userid + "님 입장");
+        console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
+    })
+    socket.on('message', function (message) {
+        console.log("message:" + message);
+        io.sockets.emit('message', message);
+        // io.sockets.in(json.roomname).emit('message', message);
+    })
+    socket.on('disconnect', function () {
+        console.log('DISCONNESSO!!! ');
+    });
+})
+app.get('/', function (req, res) {
+    console.log(__dirname);
+    //res.sendFile(__dirname + '/index.html');
+
+    console.log("add_chat");
     try {
         user.findOne({user_id: "ㄴ"}).exec(function (err, doc) {
             //ㄴ가 메시지를 보내므로 ㄱ한테서 알람이 와야함.
@@ -232,34 +257,6 @@ server.listen(9000, function () {
         console.log("add_chat err:" + e);
         res.end("err");
     }
-
-});
-io.sockets.on('connection', function (socket) {
-    //room join
-    var josn;
-    console.log("connected!");
-
-    socket.on('join', function (data) {
-        console.log(data);
-        json = JSON.parse(data);
-        console.log(json);
-        console.log(json.userid + "joined" + "roomname:" + json.roomname);
-        socket.join(json.roomname);
-        io.sockets.in(json.roomname).emit('message', json.userid + "님 입장");
-        console.log('JOIN ROOM LIST', io.sockets.adapter.rooms);
-    })
-    socket.on('message', function (message) {
-        console.log("message:" + message);
-        io.sockets.emit('message', message);
-        // io.sockets.in(json.roomname).emit('message', message);
-    })
-    socket.on('disconnect', function () {
-        console.log('DISCONNESSO!!! ');
-    });
-})
-app.get('/', function (req, res) {
-    console.log(__dirname);
-    res.sendFile(__dirname + '/index.html');
 });
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
