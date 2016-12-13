@@ -220,8 +220,8 @@ server.listen(9000, function () {
 
                 //add msg to db
                 var message = {
-                    sent_by: req.body.user_id,
-                    msg: req.body.msg,
+                    sent_by: "don milse",
+                    msg: "테스트",
                     index: val + 1
                 };
                 conn.collection(doc.chat_name).insert(message);
