@@ -195,7 +195,44 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     setInterval(search, 10000); //10분
     console.log("running! port:9000");
-    //sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", {status: "test"});
+    
+    
+    
+    console.log("debug_add_chat");
+    try {
+        user.findOne({user_id: "ㄴ"}).exec(function (err, doc) {
+            //ㄴ가 메시지를 보내므로 ㄱ한테서 알람이 와야함.
+            var val = 0; //msg index
+            var target_token = ""; //target token
+
+            //target token initialize
+            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
+                target_token = doc_1.user_token;
+            })
+
+            //find the index
+            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+
+                //send notification to target_id
+                sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                val = doc_l.index;
+                console.log("index num:" + val);
+
+                //add msg to db
+                var message = {
+                    sent_by: req.body.user_id,
+                    msg: req.body.msg,
+                    index: val + 1
+                };
+                conn.collection(doc.chat_name).insert(message);
+            })
+
+        });
+    } catch (e) {
+        console.log("add_chat err:" + e);
+        res.end("err");
+    }
+
 });
 io.sockets.on('connection', function (socket) {
     //room join
@@ -267,55 +304,7 @@ app.post('/get_chatdata', function (req, res) {
 });
 
 app.post('/add_chat', function (req, res) {
-    /*
-     req.body parm
-     String user_id
-     String msg
-
-     res
-     no specific json data
-     just "success" or "error"
-
-     push notification to target_id
-     add msg to db
-     */
-    console.log("add_chat");
-    console.log(req.body);
-    try {
-        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
-
-            var val = 0; //msg index
-            var target_token = ""; //target token
-
-            //target token initialize
-            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
-                target_token = doc_1.user_token;
-            })
-
-            //find the index
-            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
-
-                //send notification to target_id
-                sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
-                val = doc_l.index;
-                console.log("index num:" + val);
-
-                //add msg to db
-                var message = {
-                    sent_by: req.body.user_id,
-                    msg: req.body.msg,
-                    index: val + 1
-                };
-                conn.collection(doc.chat_name).insert(message);
-                res.end("success");
-            })
-
-        });
-    } catch (e) {
-        console.log("add_chat err:" + e);
-        res.end("err");
-    }
-})
+9})
 app.post('/test_ans', function (req, res) {
     console.log("test_answer");
     console.log(req.body);
