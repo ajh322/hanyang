@@ -292,7 +292,6 @@ app.post('/get_chatdata', function (req, res) {
      data exmaple
      [{index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}, {index:0,msg:"asdd",sent_by:"admin"}]
      */
-    console.log("get_chatdata");
     user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
         get_chat_model(doc.chat_name).find({}).exec(function (err, doc_l) {
             res.end(JSON.stringify(doc_l));
@@ -301,7 +300,55 @@ app.post('/get_chatdata', function (req, res) {
 });
 
 app.post('/add_chat', function (req, res) {
-9})
+    /*
+     req.body parm
+     String user_id
+     String msg
+
+     res
+     no specific json data
+     just "success" or "error"
+
+     push notification to target_id
+     add msg to db
+     */
+    console.log("add_chat");
+    console.log(req.body);
+    try {
+        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+
+            var val = 0; //msg index
+            var target_token = ""; //target token
+
+            //target token initialize
+            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
+                target_token = doc_1.user_token;
+            })
+
+            //find the index
+            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+
+                //send notification to target_id
+                sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                val = doc_l.index;
+                console.log("index num:" + val);
+
+                //add msg to db
+                var message = {
+                    sent_by: req.body.user_id,
+                    msg: req.body.msg,
+                    index: val + 1
+                };
+                conn.collection(doc.chat_name).insert(message);
+                res.end("success");
+            })
+
+        });
+    } catch (e) {
+        console.log("add_chat err:" + e);
+        res.end("err");
+    }
+})
 app.post('/test_ans', function (req, res) {
     console.log("test_answer");
     console.log(req.body);
