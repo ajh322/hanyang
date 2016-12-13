@@ -251,7 +251,7 @@ app.get('/', function (req, res) {
                 };
                 conn.collection(doc.chat_name).insert(message);
             })
-
+            res.end();
         });
     } catch (e) {
         console.log("add_chat err:" + e);
