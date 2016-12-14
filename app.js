@@ -182,8 +182,19 @@ function sendMessageToUser(deviceId, message) {
     });
 }
 server.listen(9000, function () {
-    search_worker();
+    // search_worker();
     //setInterval(search, 10000); //10분
+    var worker = new Worker(function(){
+        postMessage("I'm working before postMessage('ali').");
+        this.onmessage = function(event) {
+            postMessage('Hi ' + event.data);
+            self.close();
+        };
+    });
+    worker.onmessage = function(event) {
+        console.log("Worker said : " + event.data);
+    };
+    worker.postMessage('ali');
     console.log("running! port:9000");
 });
 function search_worker()
