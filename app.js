@@ -179,10 +179,10 @@ function sendMessageToUser(deviceId, message) {
                 to: deviceId
             }
         )
-    }, function (errors, response, body) {
+    }, function (error, response, body) {
         var obj = JSON.parse(body);
         console.log("에러사항"+obj.results[0].error);
-        if (errors) {
+        if (error) {
             if (obj.results[0].error.toString() == "MissingRegistration")
             {
                 console.log("resend!");
