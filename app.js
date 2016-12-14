@@ -54,30 +54,6 @@ function list_w_add(id) {
     });
 
 }
-
-function search() {
-    console.log("searching!")
-    list_m.find({}).sort('index').exec(function (err, docs_m) {
-        //남자오름차순 여자오름차순 한다음에...
-        console.log("a!")
-        list_w.find({}).sort('index').exec(function (err, docs_w) {
-            //남자오름차순 여자오름차순 한다음에...
-            console.log("b")
-            try {
-                console.log("c")
-                console.log(docs_m[0] + docs_w[0]);
-                if (docs_m[0] != null && docs_w[0] != null)
-                    test(docs_m[0].user_id, docs_w[0].user_id);
-            } catch (e) {
-                console.log(e)
-            }
-
-        })
-
-    })
-
-
-}
 function make_test_state(m_id, w_id) {
     user.find({$or: [{user_id: m_id}, {user_id: w_id}]}).exec(function (err, docs) {
             docs.forEach(function (doc) {
@@ -205,7 +181,12 @@ function sendMessageToUser(deviceId, message) {
     });
 }
 server.listen(9000, function () {
-    setInterval(search, 10000); //10분
+    var worker = new Worker(search.js);
+    worker.postMessage("search");
+    worker.onmessage = function(event) {
+        console.log(event.data);
+    }
+    //setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
 io.sockets.on('connection', function (socket) {
@@ -335,6 +316,8 @@ app.post('/add_chat', function (req, res) {
             //target token initialize
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
                 target_token = doc_1.user_token;
+
+                //sometimes target token initialize works slowly.
                 return after();
             })
 
