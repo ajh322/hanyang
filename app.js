@@ -181,7 +181,7 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (error, response, body) {
         if (error) {
-            console.log(body);
+            console.log("err"+body);
             sendMessageToUser(deviceId, message);
         }
         else if (response.statusCode >= 400) {
