@@ -182,15 +182,44 @@ function sendMessageToUser(deviceId, message) {
     });
 }
 server.listen(9000, function () {
-    console.log(__dirname);
-    var worker = new Worker("public/modules/search.js");
-    worker.postMessage("search");
-    worker.onmessage = function(event) {
-        console.log(event.data);
-    }
+    search_worker();
     //setInterval(search, 10000); //10분
     console.log("running! port:9000");
 });
+function search_worker()
+{
+    var worker = new Worker(function(){
+        postMessage("");
+        this.onmessage = function(event) {
+            /*postMessage('Hi ' + event.data);
+            self.close();*/
+        };
+    });
+    worker.onmessage = function(event) {
+        setInterval(search, 10000); //10분
+        console.log("Worker said : " + event.data);
+        function search() {
+            console.log("searching!")
+            list_m.find({}).sort('index').exec(function (err, docs_m) {
+                //남자오름차순 여자오름차순 한다음에...
+                console.log("a!")
+                list_w.find({}).sort('index').exec(function (err, docs_w) {
+                    //남자오름차순 여자오름차순 한다음에...
+                    console.log("b")
+                    try {
+                        console.log("c")
+                        console.log(docs_m[0] + docs_w[0]);
+                        if (docs_m[0] != null && docs_w[0] != null)
+                            test(docs_m[0].user_id, docs_w[0].user_id);
+                    } catch (e) {
+                        console.log(e)
+                    }
+                })
+            })
+        }
+    };
+    worker.postMessage('ali');
+}
 io.sockets.on('connection', function (socket) {
     //room join
     var josn;
