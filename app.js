@@ -133,7 +133,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 function sendMessageToUser(deviceId, message) {
-    console.log(deviceId);
+    console.log("devideId"+deviceId);
+    console.log(("message"+JSON.stringify(message)));
     var str_body, str_click_action;
     switch (message.status) {
         case 'test':
@@ -183,12 +184,10 @@ function sendMessageToUser(deviceId, message) {
         var obj = JSON.parse(body);
         console.log(typeof (obj.results[0].error));
         console.log(typeof (JSON.stringify(obj.results[0].error)));
-        console.log("devideId"+deviceId);
-        console.log("message"+message);
         if (obj.results[0].error+"" == "MissingRegistration") {
             console.log("resend!");
             console.log("devideId"+deviceId);
-            console.log("message"+message);
+            console.log("message"+JSON.stringify(message));
             //sendMessageToUser(deviceId, message);
         }
         /*console.log("에러사항" + obj.results[0].error);
