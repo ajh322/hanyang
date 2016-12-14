@@ -180,9 +180,7 @@ function sendMessageToUser(deviceId, message) {
             }
         )
     }, function (error, response, body) {
-        console.log(error);
-        console.log(response);
-        console.log(body);
+        console.log(body.results);
         if (error) {
             console.log("err"+body);
             sendMessageToUser(deviceId, message);
