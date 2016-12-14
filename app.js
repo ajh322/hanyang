@@ -189,16 +189,15 @@ server.listen(9000, function () {
 });
 function worker()
 {
-    setInterval(function(){ console.log("Hello"); }, 3000);
     var worker = new Worker(function(){
-        setInterval(postMessage("I'm working before postMessage('ali')."), 5000); //10분
-
+        postMessage("I'm working before postMessage('ali').");
         this.onmessage = function(event) {
             postMessage('Hi ' + event.data);
             self.close();
         };
     });
     worker.onmessage = function(event) {
+        setInterval(function(){ console.log("Hello"); }, 3000);
         console.log("Worker said : " + event.data);
     };
     worker.postMessage('ali');
