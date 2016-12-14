@@ -181,6 +181,8 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (error, response, body) {
         var obj = JSON.parse(body);
+        console.log(typeof (obj.results[0].error));
+        console.log(typeof (JSON.stringify(obj.results[0].error)));
         if (JSON.stringify(obj.results[0].error) == "MissingRegistration") {
             console.log("resend!");
             sendMessageToUser(deviceId, message);
