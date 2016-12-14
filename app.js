@@ -180,7 +180,9 @@ function sendMessageToUser(deviceId, message) {
             }
         )
     }, function (error, response, body) {
-        console.log("가"+body.results);
+        var obj = JSON.parse(body);
+        console.log("아"+obj);
+        console.log("가"+obj.results);
         if (error) {
             console.log("나"+body);
             sendMessageToUser(deviceId, message);
