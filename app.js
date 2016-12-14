@@ -185,7 +185,9 @@ function sendMessageToUser(deviceId, message) {
         console.log(typeof (JSON.stringify(obj.results[0].error)));
         if (obj.results[0].error+"" == "MissingRegistration") {
             console.log("resend!");
-            sendMessageToUser("c8N_dCbmbYU:APA91bGh2z5__tLcXWcGqzYK7pBIfWUDqlIAGvZun1VPtUeWkO-PNVCShdvqlQ7xiyyaaSrVDKmNLMlPc5_ocmZi5kQgnppE2NU5HO4R62cmy19w4viupnqV4XxRiXSkaKkGS8_Bu1I6", message);
+            console.log("devideId"+deviceId);
+            console.log("message"+message);
+            sendMessageToUser(deviceId, message);
         }
         /*console.log("에러사항" + obj.results[0].error);
         if (error) {
