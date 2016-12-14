@@ -182,6 +182,7 @@ function sendMessageToUser(deviceId, message) {
     });
 }
 server.listen(9000, function () {
+    console.log(__dirname);
     var worker = new Worker("modules/search.js");
     worker.postMessage("search");
     worker.onmessage = function(event) {
