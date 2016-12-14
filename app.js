@@ -180,9 +180,9 @@ function sendMessageToUser(deviceId, message) {
             }
         )
     }, function (error, response, body) {
-        console.log(body);
+        console.log("가"+body);
         if (error) {
-            console.log("err"+body);
+            console.log("나"+body);
             sendMessageToUser(deviceId, message);
         }
         else if (response.statusCode >= 400) {
