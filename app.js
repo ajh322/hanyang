@@ -181,14 +181,13 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (error, response, body) {
         var obj = JSON.parse(body);
-        console.log("에러사항"+obj.results[0].error);
+        if (obj.results[0].error.toString() == "MissingRegistration") {
+            console.log("resend!");
+            sendMessageToUser(deviceId, message);
+        }
+        console.log("에러사항" + obj.results[0].error);
         if (error) {
-            if (obj.results[0].error.toString() == "MissingRegistration")
-            {
-                console.log("resend!");
-                sendMessageToUser(deviceId, message);
-            }
-            //console.log("나"+body);
+            console.log(body);
         }
         else if (response.statusCode >= 400) {
             console.error('HTTP Error: ' + response.statusCode + ' - ' + response.statusMessage + '\n' + body);
