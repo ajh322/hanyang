@@ -341,7 +341,7 @@ app.post('/add_chat', function (req, res) {
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
 
                 //send notification to target_id
-                if (target_token != doc.user_token)
+                //if (target_token != doc.user_token)
                     sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
                 val = doc_l.index;
                 console.log("index num:" + val);
