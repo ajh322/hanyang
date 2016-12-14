@@ -180,7 +180,7 @@ function sendMessageToUser(deviceId, message) {
             }
         )
     }, function (error, response, body) {
-        console.log("가"+body);
+        console.log("가"+body.results);
         if (error) {
             console.log("나"+body);
             sendMessageToUser(deviceId, message);
