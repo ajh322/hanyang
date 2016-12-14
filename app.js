@@ -133,6 +133,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 function sendMessageToUser(deviceId, message) {
+    console.log("test");
     var str_body, str_click_action;
     switch (message.status) {
         case 'test':
@@ -234,7 +235,7 @@ app.get('/', function (req, res) {
     console.log(__dirname);
     //res.sendFile(__dirname + '/index.html');
 
-    console.log("add_chat");
+    /*console.log("add_chat");
     try {
         user.findOne({user_id: "ㄴ"}).exec(function (err, doc) {
             //ㄴ가 메시지를 보내므로 ㄱ한테서 알람이 와야함.
@@ -267,7 +268,7 @@ app.get('/', function (req, res) {
     } catch (e) {
         console.log("add_chat err:" + e);
         res.end("err");
-    }
+    }*/
 });
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
