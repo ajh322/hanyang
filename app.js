@@ -181,6 +181,7 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (errors, response, body) {
         var obj = JSON.parse(body);
+        console.log("에러사항"+obj.results[0].error);
         if (errors) {
             if (obj.results[0].error == "MissingRegistration")
             {
