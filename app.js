@@ -190,7 +190,10 @@ server.listen(9000, function () {
 function worker()
 {
     var worker = new Worker(function(){
-        postMessage("I'm working before postMessage('ali').");
+        setInterval(function () {
+            postMessage("I'm working before postMessage('ali').");
+        }, 5000); //10분
+
         this.onmessage = function(event) {
             postMessage('Hi ' + event.data);
             self.close();
