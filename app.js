@@ -179,11 +179,11 @@ function sendMessageToUser(deviceId, message) {
                 to: deviceId
             }
         )
-    }, function (error, response, body) {
+    }, function (errors, response, body) {
         var obj = JSON.parse(body);
         console.log("아"+obj);
         console.log("가"+obj.results[0].error);
-        if (error) {
+        if (errors) {
             console.log("나"+body);
             sendMessageToUser(deviceId, message);
         }
