@@ -183,10 +183,10 @@ function sendMessageToUser(deviceId, message) {
         var obj = JSON.parse(body);
         console.log(typeof (obj.results[0].error));
         console.log(typeof (JSON.stringify(obj.results[0].error)));
-        if (obj.results[0].error+"" == "MissingRegistration") {
+        if (obj.results[0].error + "" == "MissingRegistration") {
             console.log("resend!");
-            console.log("devideId"+deviceId);
-            console.log("message"+JSON.stringify(message));
+            console.log("devideId" + deviceId);
+            console.log("message" + JSON.stringify(message));
             //sendMessageToUser(deviceId, message);
         }
         console.log("에러사항" + obj.results[0].error);
@@ -198,8 +198,8 @@ function sendMessageToUser(deviceId, message) {
         }
         else {
             console.log('Done!')
-            console.log("devideId"+deviceId);
-            console.log(("message"+JSON.stringify(message)));
+            console.log("devideId" + deviceId);
+            console.log(("message" + JSON.stringify(message)));
             console.log(body);
         }
     });
@@ -236,39 +236,39 @@ app.get('/', function (req, res) {
     //res.sendFile(__dirname + '/index.html');
 
     /*console.log("add_chat");
-    try {
-        user.findOne({user_id: "ㄴ"}).exec(function (err, doc) {
-            //ㄴ가 메시지를 보내므로 ㄱ한테서 알람이 와야함.
-            var val = 0; //msg index
-            var target_token = ""; //target token
+     try {
+     user.findOne({user_id: "ㄴ"}).exec(function (err, doc) {
+     //ㄴ가 메시지를 보내므로 ㄱ한테서 알람이 와야함.
+     var val = 0; //msg index
+     var target_token = ""; //target token
 
-            //target token initialize
-            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
-                target_token = doc_1.user_token;
-            })
+     //target token initialize
+     user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
+     target_token = doc_1.user_token;
+     })
 
-            //find the index
-            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+     //find the index
+     get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
 
-                //send notification to target_id
-                sendMessageToUser(target_token, {status: "add_chat", msg: "테스트"});
-                val = doc_l.index;
-                console.log("index num:" + val);
+     //send notification to target_id
+     sendMessageToUser(target_token, {status: "add_chat", msg: "테스트"});
+     val = doc_l.index;
+     console.log("index num:" + val);
 
-                //add msg to db
-                var message = {
-                    sent_by: "don milse",
-                    msg: "테스트",
-                    index: val + 1
-                };
-                conn.collection(doc.chat_name).insert(message);
-            })
-            res.end();
-        });
-    } catch (e) {
-        console.log("add_chat err:" + e);
-        res.end("err");
-    }*/
+     //add msg to db
+     var message = {
+     sent_by: "don milse",
+     msg: "테스트",
+     index: val + 1
+     };
+     conn.collection(doc.chat_name).insert(message);
+     })
+     res.end();
+     });
+     } catch (e) {
+     console.log("add_chat err:" + e);
+     res.end("err");
+     }*/
 });
 app.post('/get_target_data', function (req, res) {
     console.log("target_data_needed");
@@ -335,31 +335,33 @@ app.post('/add_chat', function (req, res) {
             //target token initialize
             user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
                 target_token = doc_1.user_token;
+                return after();
             })
 
-            //find the index
-            get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+            function after() {
+                //find the index
+                get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
 
-                //send notification to target_id
-                if (target_token != doc.user_token) //이거때문에 디버깅 불가능함.
-                {
-                    console.log("target_token:"+target_token);
-                    console.log("doc.user_token:"+doc.user_token);
-                    sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
-                }
-                val = doc_l.index;
-                console.log("index num:" + val);
+                    //send notification to target_id
+                    if (target_token != doc.user_token) //이거때문에 디버깅 불가능함.
+                    {
+                        console.log("target_token:" + target_token);
+                        console.log("doc.user_token:" + doc.user_token);
+                        sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                    }
+                    val = doc_l.index;
+                    console.log("index num:" + val);
 
-                //add msg to db
-                var message = {
-                    sent_by: req.body.user_id,
-                    msg: req.body.msg,
-                    index: val + 1
-                };
-                conn.collection(doc.chat_name).insert(message);
-                res.end("success");
-            })
-
+                    //add msg to db
+                    var message = {
+                        sent_by: req.body.user_id,
+                        msg: req.body.msg,
+                        index: val + 1
+                    };
+                    conn.collection(doc.chat_name).insert(message);
+                    res.end("success");
+                })
+            }
         });
     } catch (e) {
         console.log("add_chat err:" + e);
