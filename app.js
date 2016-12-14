@@ -189,16 +189,15 @@ server.listen(9000, function () {
 });
 function worker() {
     var worker = new Worker(function () {
-        postMessage("I'm working before postMessage('ali').");
+        postMessage("");
         this.onmessage = function (event) {
             self.close();
         };
     });
     worker.onmessage = function (event) {
-        setInterval(search, 3000);
-        console.log("Worker said : " + event.data);
+        setInterval(search, 10000);
     };
-    worker.postMessage('ali');
+    worker.postMessage("");
 }
 function search() {
     console.log("searching!")
