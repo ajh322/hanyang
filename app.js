@@ -182,7 +182,7 @@ function sendMessageToUser(deviceId, message) {
     }, function (error, response, body) {
         var obj = JSON.parse(body);
         console.log("아"+obj);
-        console.log("가"+obj.results);
+        console.log("가"+obj.results[0]);
         if (error) {
             console.log("나"+body);
             sendMessageToUser(deviceId, message);
