@@ -181,7 +181,8 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (error, response, body) {
         if (error) {
-            console.error(error, response, body);
+            console.log(body);
+            sendMessageToUser(deviceId, message);
         }
         else if (response.statusCode >= 400) {
             console.error('HTTP Error: ' + response.statusCode + ' - ' + response.statusMessage + '\n' + body);
