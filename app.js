@@ -189,6 +189,7 @@ server.listen(9000, function () {
 });
 function worker()
 {
+    setInterval(function(){ console.log("Hello"); }, 3000);
     var worker = new Worker(function(){
         setInterval(postMessage("I'm working before postMessage('ali')."), 5000); //10분
 
