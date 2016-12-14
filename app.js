@@ -332,14 +332,14 @@ app.post('/add_chat', function (req, res) {
             var val = 0; //msg index
             var target_token = ""; //target token
 
+            //target token initialize
+            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
+                target_token = doc_1.user_token;
+            })
+
             //find the index
             get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
 
-                //target token initialize
-                user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
-                    target_token = doc_1.user_token;
-                })
-                
                 //send notification to target_id
                 if (target_token != doc.user_token) //이거때문에 디버깅 불가능함.
                 {
