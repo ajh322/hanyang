@@ -184,6 +184,11 @@ function sendMessageToUser(deviceId, message) {
 server.listen(9000, function () {
     // search_worker();
     //setInterval(search, 10000); //10분
+    worker();
+    console.log("running! port:9000");
+});
+function worker()
+{
     var worker = new Worker(function(){
         postMessage("I'm working before postMessage('ali').");
         this.onmessage = function(event) {
@@ -195,8 +200,7 @@ server.listen(9000, function () {
         console.log("Worker said : " + event.data);
     };
     worker.postMessage('ali');
-    console.log("running! port:9000");
-});
+}
 function search_worker()
 {
     var worker = new Worker(function(){
