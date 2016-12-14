@@ -14,6 +14,7 @@ var list_w = require('./models/list_w');
 var chat = require('./models/chat');
 var io = require('socket.io')(server);
 var request = require('request');
+var Worker = require('webworker-threads').Worker;
 
 function get_chat_model(chat_id) {
     var chat_Schema = chat;
