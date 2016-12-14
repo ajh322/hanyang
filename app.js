@@ -181,11 +181,10 @@ function sendMessageToUser(deviceId, message) {
         )
     }, function (errors, response, body) {
         var obj = JSON.parse(body);
-        console.log("아"+obj);
-        console.log("가"+obj.results[0].error);
         if (errors) {
-            console.log("나"+body);
-            sendMessageToUser(deviceId, message);
+            if(obj.results[0].error=="MissingRegistration")
+                sendMessageToUser(deviceId, message);
+         //   console.log("나"+body);
         }
         else if (response.statusCode >= 400) {
             console.error('HTTP Error: ' + response.statusCode + ' - ' + response.statusMessage + '\n' + body);
