@@ -15,6 +15,8 @@ var chat = require('./models/chat');
 var io = require('socket.io')(server);
 var request = require('request');
 var Worker = require('webworker-threads').Worker;
+var multer  = require('multer')
+var upload = multer({ dest: 'public/images' })
 
 function get_chat_model(chat_id) {
     var chat_Schema = chat;
@@ -321,7 +323,7 @@ app.post('/get_chatdata', function (req, res) {
         })
     })
 });
-app.post('/add_img', function (req, res) {
+app.post('/add_img', upload.single('file'), function (req, res) {
     /*
      req.body parm
      String user_id
@@ -335,6 +337,7 @@ app.post('/add_img', function (req, res) {
      add msg to db
      */
     console.log(req.body);
+    console.log(req.file);
     res.end();
 })
 app.post('/add_chat', function (req, res) {
