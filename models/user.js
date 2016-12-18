@@ -16,7 +16,8 @@ var userSchema = new mongoose.Schema({
     user_on_chat:{type:String,default:"0"}, //채팅상태
     user_target_id:{type:String,default:""}, //테스트상태인 상대방 id
     user_like:{type:String,default:"0"}, // partner liked
-    chat_name:{type:String,default:""} // chat room name
+    chat_name:{type:String,default:""}, // chat room name
+    img_dir:{type:String,default:""} // chat room name
 });
 var user = mongoose.model('user', userSchema, "user");
 module.exports = user;

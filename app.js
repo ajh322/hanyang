@@ -321,7 +321,22 @@ app.post('/get_chatdata', function (req, res) {
         })
     })
 });
+app.post('/add_img', function (req, res) {
+    /*
+     req.body parm
+     String user_id
+     File file
 
+     res
+     no specific json data
+     just "success" or "error"
+
+     push notification to target_id
+     add msg to db
+     */
+    console.log(req.body);
+    res.end();
+})
 app.post('/add_chat', function (req, res) {
     /*
      req.body parm
@@ -337,48 +352,50 @@ app.post('/add_chat', function (req, res) {
      */
     console.log("add_chat");
     console.log(req.body);
-    try {
-        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+    if (req.body.user_id != "" && req.body.msg != "") {
+        try {
+            user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
 
-            var val = 0; //msg index
-            var target_token = ""; //target token
+                var val = 0; //msg index
+                var target_token = ""; //target token
 
-            //target token initialize
-            user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
-                target_token = doc_1.user_token;
+                //target token initialize
+                user.findOne({user_id: doc.user_target_id}).exec(function (err, doc_1) {
+                    target_token = doc_1.user_token;
 
-                //sometimes target token initialize works slowly.
-                return after();
-            })
-
-            function after() {
-                //find the index
-                get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
-
-                    //send notification to target_id
-                    if (target_token != doc.user_token) //이거때문에 디버깅 불가능함.
-                    {
-                        console.log("target_token:" + target_token);
-                        console.log("doc.user_token:" + doc.user_token);
-                        sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
-                    }
-                    val = doc_l.index;
-                    console.log("index num:" + val);
-
-                    //add msg to db
-                    var message = {
-                        sent_by: req.body.user_id,
-                        msg: req.body.msg,
-                        index: val + 1
-                    };
-                    conn.collection(doc.chat_name).insert(message);
-                    res.end("success");
+                    //sometimes target token initialize works slowly.
+                    return after();
                 })
-            }
-        });
-    } catch (e) {
-        console.log("add_chat err:" + e);
-        res.end("err");
+
+                function after() {
+                    //find the index
+                    get_chat_model(doc.chat_name).findOne({}).sort('-index').exec(function (err, doc_l) {
+
+                        //send notification to target_id
+                        if (target_token != doc.user_token) //이거때문에 디버깅 불가능함.
+                        {
+                            console.log("target_token:" + target_token);
+                            console.log("doc.user_token:" + doc.user_token);
+                            sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                        }
+                        val = doc_l.index;
+                        console.log("index num:" + val);
+
+                        //add msg to db
+                        var message = {
+                            sent_by: req.body.user_id,
+                            msg: req.body.msg,
+                            index: val + 1
+                        };
+                        conn.collection(doc.chat_name).insert(message);
+                        res.end("success");
+                    })
+                }
+            });
+        } catch (e) {
+            console.log("add_chat err:" + e);
+            res.end("err");
+        }
     }
 })
 app.post('/test_ans', function (req, res) {
