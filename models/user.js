@@ -2,7 +2,7 @@
  * Created by AJH322 on 2016-11-11.
  */
 var mongoose = require('mongoose');
-mongoose = mongoose.createConnection('mongodb://35.161.80.18:27017/user');
+var conn = mongoose.createConnection('mongodb://35.161.80.18:27017/user');
 var userSchema = new mongoose.Schema({
     user_id: {type: String, required: true, unique: true},
     user_pw: {type: String},
@@ -20,5 +20,5 @@ var userSchema = new mongoose.Schema({
     chat_name: {type: String, default: ""}, // chat room name
     img_dir: {type: String, default: ""} // chat room name
 });
-var user = mongoose.model('user', userSchema, "user");
+var user = conn.model('user', userSchema, "user");
 module.exports = user;
