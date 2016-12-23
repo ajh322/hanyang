@@ -6,7 +6,7 @@ var http = require('http');
 var server = http.Server(app);
 var bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://35.161.80.18:27017/user');
+mongoose.connect('mongodb://35.161.80.18:27017/');
 
 var conn = mongoose.createConnection('mongodb://35.161.80.18:27017/user');
 var conn2 = mongoose.createConnection('mongodb://35.161.80.18:27017/chat');
