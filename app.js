@@ -339,8 +339,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      push notification to target_id
      add msg to db
      */
-    console.log(req.body.data);
-    console.log(JSON.parse(req.body.data.user_id));
+    console.log(req.body.id);
     console.log(req.file);
 
     /*
