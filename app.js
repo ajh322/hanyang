@@ -349,7 +349,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             if (doc.profile_img_dir != "") {
                 //refresh image
-                fs.unlink(req.file.path,function(err){
+                fs.unlink(doc.profile_img_dir,function(err){
                     if(err) return console.log(err);
                 });
             }
