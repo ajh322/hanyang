@@ -339,7 +339,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      push notification to target_id
      add msg to db
      */
-    console.log(req.file);
+    //console.log(req.file);
 
     /*
      user -> img_dir must be changed,
@@ -347,16 +347,14 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      */
     if (req.file != null) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
-            console.log(doc);
             if (doc.profile_img_dir != "") {
-                console.log("came");
                 //refresh image
                 fs.unlink(path,function(err){
                     if(err) return console.log(err);
-                    console.log('file deleted successfully');
                 });
             }
             doc.profile_img_dir = req.file.path;
+            doc.save();
         })
     }
     res.end();
