@@ -17,7 +17,16 @@ var io = require('socket.io')(server);
 var request = require('request');
 var Worker = require('webworker-threads').Worker;
 var multer = require('multer')
-var upload = multer({dest: 'public/images'})
+var path = require('path');
+
+var storage_main = multer.diskStorage({
+    destination: 'public/images',
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+});
+
+var upload = multer({storage: storage_main});
 var fs = require('fs');
 
 function get_chat_model(chat_id) {
