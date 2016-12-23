@@ -347,7 +347,9 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      */
     if (req.file != null) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
+            console.log(doc);
             if (doc.profile_img_dir != "") {
+                console.log("came");
                 //refresh image
                 fs.unlink(path,function(err){
                     if(err) return console.log(err);
