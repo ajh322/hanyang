@@ -17,14 +17,14 @@ var chat = require('./models/chat');
 var io = require('socket.io')(server);
 var request = require('request');
 var Worker = require('webworker-threads').Worker;
-var multer  = require('multer')
-var upload = multer({ dest: 'public/images' })
+var multer = require('multer')
+var upload = multer({dest: 'public/images'})
 
-conn.on('error', function(err){
-    if(err) throw err;
+conn.on('error', function (err) {
+    if (err) throw err;
 });
 
-conn.once('open', function callback () {
+conn.once('open', function callback() {
     console.info('Mongo db connected successfully');
 });
 
@@ -198,6 +198,10 @@ server.listen(9000, function () {
     //setInterval(search, 10000); //10분
     worker();
     console.log("running! port:9000");
+    user.findOne({user_id: "ㄱ"}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+    })
 });
 function worker() {
     var worker = new Worker(function () {
