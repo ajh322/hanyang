@@ -7,7 +7,7 @@ var server = http.Server(app);
 var bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
 //mongoose.connect('mongodb://35.161.80.18:27017/user');
-
+var conn2 = mongoose.createConnection('mongodb://35.161.80.18:27017/chat');
 var user = require('./models/user');
 var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
@@ -19,7 +19,6 @@ var multer = require('multer')
 var upload = multer({dest: 'public/images'})
 
 function get_chat_model(chat_id) {
-    var conn2 = mongoose.createConnection('mongodb://35.161.80.18:27017/chat');
     var chat_Schema = chat;
     var model = conn2.model(chat_id, chat_Schema, chat_id);
     return model;
@@ -392,7 +391,7 @@ app.post('/add_chat', function (req, res) {
                             msg: req.body.msg,
                             index: val + 1
                         };
-                        conn.collection(doc.chat_name).insert(message);
+                        conn2.collection(doc.chat_name).insert(message);
                         res.end("success");
                     })
                 }
