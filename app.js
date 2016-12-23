@@ -109,6 +109,8 @@ function test(m_id, w_id) {
     //알림가야하고 앱에서 서로의 프로필이 나와야함.
     make_test_state(m_id, w_id);
 }
+
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
