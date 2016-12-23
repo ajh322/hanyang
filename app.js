@@ -6,8 +6,10 @@ var http = require('http');
 var server = http.Server(app);
 var bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://35.161.80.18:27017/user');
-var conn = mongoose.connection;
+//mongoose.connect('mongodb://35.161.80.18:27017/user');
+
+var conn = mongoose.createConnection('mongodb://35.161.80.18:27017/user');
+var conn2 = mongoose.createConnection('mongodb://35.161.80.18:27017/chat');
 var user = require('./models/user');
 var list_m = require('./models/list_m');
 var list_w = require('./models/list_w');
@@ -20,7 +22,7 @@ var upload = multer({ dest: 'public/images' })
 
 function get_chat_model(chat_id) {
     var chat_Schema = chat;
-    var model = mongoose.model(chat_id, chat_Schema, chat_id);
+    var model = conn2.model(chat_id, chat_Schema, chat_id);
     return model;
 }
 function list_m_add(id) {
@@ -298,13 +300,13 @@ function make_chat(id, id_l) {
     var chat_Schema = chat;
     //first comment
     //{ "_id" : ObjectId("584ebda72e278c7076bdf6e4"), "sent_by" : "admin", "msg" : "4님 2님 즐거운 시간 보내세요~", "index" : 0 }
-    mongoose.model(id + "/" + id_l, chat_Schema, id + "/" + id_l);
+    conn2.model(id + "/" + id_l, chat_Schema, id + "/" + id_l);
     var message = {
         sent_by: "admin",
         msg: id + "님 " + id_l + "님 즐거운 시간 보내세요~",
         index: 0
     };
-    conn.collection(id + "/" + id_l).insert(message);
+    conn2.collection(id + "/" + id_l).insert(message);
 }
 app.post('/get_chatdata', function (req, res) {
     /*
