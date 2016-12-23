@@ -353,6 +353,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
                 fs.unlink(path)
             }
             doc.profile_img_dir = req.file.path;
+            console.log(doc);
         })
     }
     res.end();
