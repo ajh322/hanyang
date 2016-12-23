@@ -110,7 +110,7 @@ function test(m_id, w_id) {
     make_test_state(m_id, w_id);
 }
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
