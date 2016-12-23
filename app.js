@@ -340,7 +340,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      add msg to db
      */
     console.log(req.body.data);
-    console.log(req.body.data[0].user_id);
+    console.log(JSON.parse(req.body.data.user_id));
     console.log(req.file);
 
     /*
