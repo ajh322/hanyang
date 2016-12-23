@@ -190,6 +190,15 @@ server.listen(9000, function () {
     //setInterval(search, 10000); //10분
     worker();
     console.log("running! port:9000");
+    user.findOne({user_id: req.body.data.user_id}).exec(function (err, doc) {
+        console.log(doc);
+        if (doc.profile_img_dir != "") {
+            //refresh image
+            fs.unlink(path)
+        }
+        doc.profile_img_dir = req.file.path;
+        console.log(doc);
+    })
 
 });
 function worker() {
@@ -347,14 +356,7 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      delete image if already exsit
      */
     if (req.file != null) {
-        user.findOne({user_id: req.body.data.user_id}).exec(function (err, doc) {
-            if (doc.profile_img_dir != "") {
-                //refresh image
-                fs.unlink(path)
-            }
-            doc.profile_img_dir = req.file.path;
-            console.log(doc);
-        })
+
     }
     res.end();
 })
