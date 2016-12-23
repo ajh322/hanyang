@@ -26,6 +26,10 @@ conn.on('error', function (err) {
 
 conn.once('open', function callback() {
     console.info('Mongo db connected successfully');
+    user.findOne({user_id: "ㄱ"}).exec(function (err, doc) {
+        //나중에 로그인 가능여부 판별후에 해야함.
+        console.log(doc);
+    })
 });
 
 function get_chat_model(chat_id) {
@@ -198,10 +202,7 @@ server.listen(9000, function () {
     //setInterval(search, 10000); //10분
     worker();
     console.log("running! port:9000");
-    user.findOne({user_id: "ㄱ"}).exec(function (err, doc) {
-        //나중에 로그인 가능여부 판별후에 해야함.
-        console.log(doc);
-    })
+
 });
 function worker() {
     var worker = new Worker(function () {
