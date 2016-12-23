@@ -18,6 +18,7 @@ var request = require('request');
 var Worker = require('webworker-threads').Worker;
 var multer = require('multer')
 var upload = multer({dest: 'public/images'})
+var fs = require('fs');
 
 function get_chat_model(chat_id) {
     var chat_Schema = chat;
@@ -340,6 +341,20 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      */
     console.log(req.body);
     console.log(req.file);
+
+    /*
+     user -> img_dir must be changed,
+     delete image if already exsit
+     */
+    if (req.file != null) {
+        user.findOne({user_id: req.body.data.user_id}).exec(function (err, doc) {
+            if (doc.profile_img_dir != "") {
+                //refresh image
+                fs.unlink(path)
+            }
+            doc.profile_img_dir = req.file.path;
+        })
+    }
     res.end();
 })
 app.post('/add_chat', function (req, res) {

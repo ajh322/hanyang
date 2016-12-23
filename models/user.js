@@ -18,7 +18,14 @@ var userSchema = new mongoose.Schema({
     user_target_id: {type: String, default: ""}, //테스트상태인 상대방 id
     user_like: {type: String, default: "0"}, // partner liked
     chat_name: {type: String, default: ""}, // chat room name
-    img_dir: {type: String, default: ""} // chat room name
+    profile_img_dir: {type: String, default: ""}, // profile img dir
+    profile_introduce: {type: String, default: ""}, // 한마디
+    profile_age: {type: String, default: ""}, // 나이
+    profile_personality: {type: String, default: ""}, // 성격
+    profile_hobby: {type: String, default: ""}, // 취미
+    profile_favorite: {type: String, default: ""}, // 좋아하는것
+    profile_ideal: {type: String, default: ""} // 이상형
+
 });
 var user = conn.model('user', userSchema, "user");
 module.exports = user;
