@@ -339,7 +339,6 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      push notification to target_id
      add msg to db
      */
-    console.log(req.body.id);
     console.log(req.file);
 
     /*
@@ -347,14 +346,12 @@ app.post('/add_img', upload.single('file'), function (req, res) {
      delete image if already exsit
      */
     if (req.file != null) {
-        user.findOne({user_id: req.body.data.user_id}).exec(function (err, doc) {
-            console.log(doc);
+        user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             if (doc.profile_img_dir != "") {
                 //refresh image
                 fs.unlink(path)
             }
             doc.profile_img_dir = req.file.path;
-            console.log(doc);
         })
     }
     res.end();
