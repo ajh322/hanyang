@@ -20,6 +20,14 @@ var Worker = require('webworker-threads').Worker;
 var multer  = require('multer')
 var upload = multer({ dest: 'public/images' })
 
+conn.on('error', function(err){
+    if(err) throw err;
+});
+
+conn.once('open', function callback () {
+    console.info('Mongo db connected successfully');
+});
+
 function get_chat_model(chat_id) {
     var chat_Schema = chat;
     var model = conn2.model(chat_id, chat_Schema, chat_id);

@@ -19,5 +19,5 @@ var userSchema = new mongoose.Schema({
     chat_name:{type:String,default:""}, // chat room name
     img_dir:{type:String,default:""} // chat room name
 });
-var user = user.model('user', userSchema, "user");
+var user = db.model('user', userSchema, "user");
 module.exports = user;
