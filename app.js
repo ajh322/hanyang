@@ -360,8 +360,8 @@ app.post('/add_img', upload.single('file'), function (req, res) {
         user.findOne({user_id: req.body.user_id}).exec(function (err, doc) {
             if (doc.profile_img_dir != "") {
                 //refresh image
-                fs.unlink(doc.profile_img_dir,function(err){
-                    if(err) return console.log(err);
+                fs.unlink(doc.profile_img_dir, function (err) {
+                    if (err) return console.log(err);
                 });
             }
             doc.profile_img_dir = req.file.path;
@@ -615,6 +615,16 @@ app.post('/search_cancel', function (req, res) { //남자 검색하러옴
         console.log(doc);
         if (doc.user_on_search == "1") //검색중인지 여부
         {
+            if (doc.user_gender == "남성") {
+                list_m.remove({user_id: req.body.user_id}, function (err) {
+                    console.log(err);
+                });
+            }
+            else if (doc.user_gender == "여성") {
+                list_w.remove({user_id: req.body.user_id}, function (err) {
+                    console.log(err);
+                });
+            }
             doc.user_on_search = "0";
             doc.user_target_id = "";
             doc.save();
