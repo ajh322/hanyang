@@ -202,6 +202,7 @@ server.listen(9000, function () {
     worker();
     console.log("running! port:9000");
 
+    
 });
 function worker() {
     var worker = new Worker(function () {
@@ -217,6 +218,9 @@ function worker() {
 }
 function search() {
     console.log("searching!")
+    user.findOne({user_id: "ㅎㅇ"}).exec(function (err, doc_1) {
+        sendMessageToUser(doc_1.user_token, {status: "add_chat", msg: "테스팅"});
+    })
     list_m.find({}).sort('index').exec(function (err, docs_m) {
         //남자오름차순 여자오름차순 한다음에...
         console.log("a!")
