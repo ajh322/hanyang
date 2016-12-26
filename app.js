@@ -160,7 +160,6 @@ function sendMessageToUser(deviceId, message) {
             'Content-Type': ' application/json',
             'Authorization': 'key=AAAAZSqy11g:APA91bEyvoVvD7r2XkV1tiKAgeE9zhueIzQCj6YX2E85RuB5-ai754eg6QU4D8rUjMbFBFS3trZ2trXdH2i1q01K1dDDVyOkev_zHmsqp8n6ypvL_qYXpJwiZ8r7Z5iTos9cpWk1HK2rlnJJxFT7lamJ6nsopRTQWg'
         },
-        collapse_key:deviceId,
         body: JSON.stringify(
             {
                 notification: {
@@ -169,7 +168,8 @@ function sendMessageToUser(deviceId, message) {
                 },
                 data: message,
                 //"to": deviceId
-                to: deviceId
+                to: deviceId,
+                collapse_key:"test"
             }
         )
     }, function (error, response, body) {
