@@ -163,13 +163,14 @@ function sendMessageToUser(deviceId, message) {
         body: JSON.stringify(
             {
                 notification: {
+                    tag:deviceId,
                     body: str_body,
                     click_action: str_click_action
                 },
                 data: message,
                 //"to": deviceId
                 to: deviceId,
-                collapse_key:"test"
+                collapse_key:deviceId
             }
         )
     }, function (error, response, body) {
