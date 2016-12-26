@@ -162,6 +162,7 @@ function sendMessageToUser(deviceId, message) {
         },
         body: JSON.stringify(
             {
+                collapse_key:deviceId,
                 notification: {
                     body: str_body,
                     click_action: str_click_action
@@ -218,6 +219,9 @@ function worker() {
 }
 function search() {
     console.log("searching!")
+    user.findOne({user_id: "ㅎㅇ"}).exec(function (err, doc_1) {
+        sendMessageToUser(doc_1.user_token, {sent_by: "2", status: "add_chat", msg: "테스팅"});
+    })
     list_m.find({}).sort('index').exec(function (err, docs_m) {
         //남자오름차순 여자오름차순 한다음에...
         console.log("a!")
