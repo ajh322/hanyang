@@ -219,7 +219,7 @@ function worker() {
 function search() {
     console.log("searching!")
     user.findOne({user_id: "ㅎㅇ"}).exec(function (err, doc_1) {
-        sendMessageToUser(doc_1.user_token, {status: "add_chat", msg: "테스팅"});
+        sendMessageToUser(doc_1.user_token, {sent_by: "2", status: "add_chat", msg: "테스팅"});
     })
     list_m.find({}).sort('index').exec(function (err, docs_m) {
         //남자오름차순 여자오름차순 한다음에...
@@ -413,7 +413,7 @@ app.post('/add_chat', function (req, res) {
                         {
                             console.log("target_token:" + target_token);
                             console.log("doc.user_token:" + doc.user_token);
-                            sendMessageToUser(target_token, {status: "add_chat", msg: req.body.msg});
+                            sendMessageToUser(target_token, {sent_by: req.body.user_id, status: "add_chat", msg: req.body.msg});
                         }
                         val = doc_l.index;
                         console.log("index num:" + val);
